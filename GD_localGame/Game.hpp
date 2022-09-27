@@ -19,9 +19,9 @@ private:
 	Player m_player;
 	static const float kPlayerSpeed;
 	static const sf::Time kTimePerFrame;
-	bool m_is_moving_up;
-	bool m_is_moving_down;
-	bool m_is_moving_left;
-	bool m_is_moving_right;
+	bool m_is_moving_up = false;
+	bool m_is_moving_down = false;
+	bool m_is_moving_left = false;
+	bool m_is_moving_right = false;
 };
 
