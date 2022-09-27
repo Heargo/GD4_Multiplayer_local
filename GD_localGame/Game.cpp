@@ -1,19 +1,12 @@
 #include "Game.hpp"
-
-const float Game::kPlayerSpeed = 100.f;
+#include "Utilities.hpp"
 const sf::Time Game::kTimePerFrame=sf::seconds(1.f / 60.f);
 
 Game::Game():
 	m_window(sf::VideoMode(640, 480), "Getting started"),
-	m_texture(), m_player(),
-	m_is_moving_up(false), m_is_moving_down(false), m_is_moving_left(false), m_is_moving_right(false)
+	m_player()
 {
-	if (!m_texture.loadFromFile("Media/Textures/EAgle.png"))
-	{
-		//handle failure
-	}
-	m_player.setTexture(m_texture);
-	m_player.setPosition(100.f, 100.f);
+
 }
 
 void Game::Run()
@@ -59,27 +52,29 @@ void Game::Update(sf::Time delta_time)
 	sf::Vector2f movement(0.f, 0.f);
 	if (m_is_moving_up)
 	{
-		movement.y -= kPlayerSpeed;
+		movement.y -= 1;
 	}
 	if (m_is_moving_down)
 	{
-		movement.y += kPlayerSpeed;
+		movement.y += 1;
 	}
 	if (m_is_moving_left)
 	{
-		movement.x -= kPlayerSpeed;
+		movement.x -= 1;
 	}
 	if (m_is_moving_right)
 	{
-		movement.x += kPlayerSpeed;
+		movement.x += 1;
 	}
-	m_player.move(movement*delta_time.asSeconds());
+	//correct diagonal speed faster
+	movement = unit(movement);
+	m_player.Move(movement*delta_time.asSeconds());
 }
 
 void Game::Render()
 {
 	m_window.clear();
-	m_window.draw(m_player);
+	m_window.draw(m_player.GetSprite());
 	m_window.display();
 }
 

@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "player.hpp"
 
 class Game
 {
@@ -15,8 +16,7 @@ private:
 
 private:
 	sf::RenderWindow m_window;
-	sf::Texture m_texture;
-	sf::Sprite m_player;
+	Player m_player;
 	static const float kPlayerSpeed;
 	static const sf::Time kTimePerFrame;
 	bool m_is_moving_up;
