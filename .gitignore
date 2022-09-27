@@ -12,3 +12,9 @@
 #vs 
 
 .vs
+
+#other
+*.tlog
+*.idb
+*.pdb
+*ilk
