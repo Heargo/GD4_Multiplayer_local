@@ -17,4 +17,4 @@
 *.tlog
 *.idb
 *.pdb
-*ilk
+*.ilk
