@@ -33,9 +33,6 @@
     <ClInclude Include="texture_holder.hpp" />
     <ClInclude Include="Utilities.hpp" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="resource_holder.inl" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

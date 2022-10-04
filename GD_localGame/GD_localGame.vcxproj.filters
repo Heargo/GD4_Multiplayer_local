@@ -51,9 +51,4 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="resource_holder.inl">
-      <Filter>Source Files</Filter>
-    </None>
-  </ItemGroup>
 </Project>
