@@ -1,11 +1,12 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "player.hpp"
+#include "resource_holder.hpp"
+#include "Texture.hpp"
 
 class Game
 {
 public:
-	Game();
+	Game(ResourceHolder<sf::Texture, Texture>& game_textures);
 	void Run();
 
 private:
@@ -15,13 +16,17 @@ private:
 	void HandlePlayerInput(sf::Keyboard::Key key, bool is_pressed);
 
 private:
-	sf::RenderWindow m_window;
-	Player m_player;
 	static const float kPlayerSpeed;
 	static const sf::Time kTimePerFrame;
-	bool m_is_moving_up = false;
-	bool m_is_moving_down = false;
-	bool m_is_moving_left = false;
-	bool m_is_moving_right = false;
+
+	ResourceHolder<sf::Texture, Texture>& m_textures;
+
+	sf::RenderWindow m_window;
+	sf::Texture m_texture;
+	sf::Sprite m_player;
+	bool m_is_moving_up;
+	bool m_is_moving_down;
+	bool m_is_moving_left;
+	bool m_is_moving_right;
 };
 
