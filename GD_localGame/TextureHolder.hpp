@@ -2,7 +2,7 @@
 #include <map>
 #include <memory>
 #include <SFML/Graphics.hpp>
-#include "texture.hpp"
+#include "Texture.hpp"
 
 class TextureHolder
 {
@@ -11,7 +11,6 @@ public:
 	sf::Texture& Get(Texture id);
 	const sf::Texture& Get(Texture id) const;
 private:
-	std::map<Texture, std::unique_ptr<sf::Texture> >
-		m_texture_map;
+	std::map<Texture, std::unique_ptr<sf::Texture>> m_texture_map;
 };
 

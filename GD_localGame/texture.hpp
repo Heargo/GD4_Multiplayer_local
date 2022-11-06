@@ -1,9 +1,8 @@
 #pragma once
-
 enum class Texture
 {
-	kLandscape,
-	kAircraft,
+	kDesert,
+	kEagle,
+	kRaptor,
 	kMissile
-
 };

@@ -1,32 +1,29 @@
 #pragma once
-#include <SFML/Graphics.hpp>
-#include "resource_holder.hpp"
-#include "Texture.hpp"
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/System/Time.hpp>
+#include "World.hpp"
+#include "Player.hpp"
 
-class Game
+
+class Game : private sf::NonCopyable
 {
 public:
-	Game(ResourceHolder<sf::Texture, Texture>& game_textures);
+	Game();
 	void Run();
 
 private:
-	void ProcessEvents();
-	void Update(sf::Time delta_time);
-	void Render();
 	void HandlePlayerInput(sf::Keyboard::Key key, bool is_pressed);
+	void ProcessInput();
+	void Update(sf::Time elapsed_time);
+	void Render();
+
+
 
 private:
-	static const float kPlayerSpeed;
 	static const sf::Time kTimePerFrame;
-
-	ResourceHolder<sf::Texture, Texture>& m_textures;
-
+	//The order of things is essential here. If you declare the world before the window, world will get constructed before a RenderWindow has been constructed and your world will be trying to use a window which hasn't been constrcuted yet and hence your worlds window, camera and spawnposition will be a mess
 	sf::RenderWindow m_window;
-	sf::Texture m_texture;
-	sf::Sprite m_player;
-	bool m_is_moving_up;
-	bool m_is_moving_down;
-	bool m_is_moving_left;
-	bool m_is_moving_right;
+	World m_world;
+	Player m_player;
 };
 
