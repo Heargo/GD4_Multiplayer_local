@@ -1,3 +1,5 @@
+// HUGO REY D00262075 : changes to cap the velocity of the entity and add friction to the entity
+
 #pragma once
 #include "SceneNode.hpp"
 
@@ -14,6 +16,7 @@ public:
 	int GetHitPoints() const;
 	void Repair(unsigned int points);
 	void Damage(unsigned int points);
+	void ApplyFriction();
 	void Destroy();
 	virtual bool IsDestroyed() const;
 

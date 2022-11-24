@@ -1,3 +1,5 @@
+// HUGO REY D00262075 : changes to cap the velocity of the entity and add friction to the entity
+
 #include "Entity.hpp"
 #include <cassert>
 
@@ -29,8 +31,32 @@ void Entity::Accelerate(sf::Vector2f velocity)
 
 void Entity::Accelerate(float vx, float vy)
 {
-    m_velocity.x += vx;
+	//cap to a max speed of 100
+	//x direction
+	if (m_velocity.x + vx > 100)
+		m_velocity.x = 100;
+    else
+		m_velocity.x += vx;
+	
+    //y direction
+	if (m_velocity.y + vy > 100)
+		m_velocity.y = 100;
+    else
     m_velocity.y += vy;
+}
+
+/**
+ * Apply a "friction" to the entity's velocity. This allow the entity to slow down over time if the player do not press any key.
+ * This is to apply a "drag" effect in space to the entity and make the controls more challenging.
+ * For now the frictionIntensity is set to 0.1f, which means that the entity will slow down by 10% of its current velocity every time this methods is called.
+ * @param No parameters
+ * @return No return value
+ */
+void Entity::ApplyFriction()
+{
+    float frictionIntensity = 0.1f;
+	m_velocity.x *= (1.f - frictionIntensity);
+	m_velocity.y *= (1.f - frictionIntensity);
 }
 
 int Entity::GetHitPoints() const

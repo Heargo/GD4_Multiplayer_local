@@ -1,3 +1,5 @@
+//HUGO REY D00262075 :apply friction to the player every update call
+
 #include "World.hpp"
 
 
@@ -32,6 +34,9 @@ void World::Update(sf::Time dt)
 		m_scenegraph.OnCommand(m_command_queue.Pop(), dt);
 	}
 	AdaptPlayerVelocity();
+	
+	//apply friction to the player movement
+	m_player_aircraft->ApplyFriction();
 
 	m_scenegraph.Update(dt);
 	AdaptPlayerPosition();
