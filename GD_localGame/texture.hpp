@@ -4,5 +4,15 @@ enum class Texture
 	kDesert,
 	kEagle,
 	kRaptor,
-	kMissile
+	kAvenger,
+	kMissile,
+	kTitleScreen,
+	kButtonNormal,
+	kButtonSelected,
+	kButtonPressed,
+	kBullet,
+	kHealthRefill,
+	kMissileRefill,
+	kFireSpread,
+	kFireRate
 };
