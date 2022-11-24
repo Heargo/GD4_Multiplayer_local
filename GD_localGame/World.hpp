@@ -27,6 +27,7 @@ public:
 
 private:
 	void LoadTextures();
+	void LoadFonts();
 	void BuildScene();
 	void AdaptPlayerPosition();
 	void AdaptPlayerVelocity();
@@ -35,6 +36,7 @@ private:
 	sf::RenderWindow& m_window;
 	sf::View m_camera;
 	TextureHolder m_textures;
+	FontHolder m_fonts;
 	SceneNode m_scenegraph;
 	std::array<SceneNode*, static_cast<int>(Layers::kLayerCount)> m_scene_layers;
 
@@ -44,5 +46,6 @@ private:
 	sf::Vector2f m_spawn_position;
 	float m_scrollspeed;
 	Aircraft* m_player_aircraft;
+
 };
 
