@@ -1,3 +1,6 @@
+// HUGO REY D00262075 : changes name of variable in InitializeActions to make it fit what's happening (player increase acceleration)
+
+
 #include "Player.hpp"
 #include "CommandQueue.hpp"
 #include "Aircraft.hpp"
@@ -14,6 +17,7 @@ struct AircraftMover
     void operator()(Aircraft& aircraft, sf::Time) const
     {
         aircraft.Accelerate(velocity);
+        aircraft.Rotate(velocity);
     }
     sf::Vector2f velocity;
 };
@@ -94,11 +98,11 @@ sf::Keyboard::Key Player::GetAssignedKey(Action action) const
 void Player::InitializeActions()
 {
     //TODO Normalize to avoid faster movement along diagonals
-    const float kPlayerSpeed = 200.f;
-    m_action_binding[Action::kMoveLeft].action = DerivedAction<Aircraft>(AircraftMover(-kPlayerSpeed, 0.f));
-    m_action_binding[Action::kMoveRight].action = DerivedAction<Aircraft>(AircraftMover(kPlayerSpeed, 0.f));
-    m_action_binding[Action::kMoveUp].action = DerivedAction<Aircraft>(AircraftMover(0.f, -kPlayerSpeed));
-    m_action_binding[Action::kMoveDown].action = DerivedAction<Aircraft>(AircraftMover(0.f, kPlayerSpeed));
+    const float kPlayerAcceleration = 5.f;
+    m_action_binding[Action::kMoveLeft].action = DerivedAction<Aircraft>(AircraftMover(-kPlayerAcceleration, 0.f));
+    m_action_binding[Action::kMoveRight].action = DerivedAction<Aircraft>(AircraftMover(kPlayerAcceleration, 0.f));
+    m_action_binding[Action::kMoveUp].action = DerivedAction<Aircraft>(AircraftMover(0.f, -kPlayerAcceleration));
+    m_action_binding[Action::kMoveDown].action = DerivedAction<Aircraft>(AircraftMover(0.f, kPlayerAcceleration));
 }
 
 bool Player::IsRealtimeAction(Action action)

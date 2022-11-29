@@ -1,3 +1,4 @@
+//HUGO REY D00262075 :apply friction to the player every update call
 #include "World.hpp"
 
 
@@ -17,21 +18,25 @@ World::World(sf::RenderWindow& window, FontHolder& font)
 	BuildScene();
 
 	m_camera.setCenter(m_spawn_position);
+	m_player_aircraft->SetVelocity(0.f, 0.f);
 }
 
 void World::Update(sf::Time dt)
 {
 	//Scroll the world
-	m_camera.move(0, m_scrollspeed * dt.asSeconds());
+	//m_camera.move(0, m_scrollspeed * dt.asSeconds());
 	
-	m_player_aircraft->SetVelocity(0.f, 0.f);
+	//m_player_aircraft->SetVelocity(0.f, 0.f);
 
 	//Forward the commands to the scenegraph, sort out velocity
 	while (!m_command_queue.IsEmpty())
 	{
 		m_scenegraph.OnCommand(m_command_queue.Pop(), dt);
 	}
-	AdaptPlayerVelocity();
+	//AdaptPlayerVelocity();
+	
+	//apply friction to the player movement
+	m_player_aircraft->ApplyFriction();
 
 	m_scenegraph.Update(dt, m_command_queue);
 	AdaptPlayerPosition();
@@ -119,5 +124,5 @@ void World::AdaptPlayerVelocity()
 	}
 
 	//Add scrolling velocity
-	m_player_aircraft->Accelerate(0.f, m_scrollspeed);
+	//m_player_aircraft->Accelerate(0.f, m_scrollspeed);
 }

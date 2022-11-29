@@ -1,5 +1,9 @@
+// HUGO REY D00262075 : changes to cap the velocity of the entity and add friction to the entity
+
 #include "Entity.hpp"
 #include <cassert>
+#include <cmath>
+#include <iostream>
 
 Entity::Entity(int hitpoints)
     : m_hitpoints(hitpoints)
@@ -13,8 +17,8 @@ void Entity::SetVelocity(sf::Vector2f velocity)
 
 void Entity::SetVelocity(float vx, float vy)
 {
-    m_velocity.x = vx;
-    m_velocity.y = vy;
+	m_velocity.x = vx;
+	m_velocity.y = vy;
 }
 
 sf::Vector2f Entity::GetVelocity() const
@@ -24,14 +28,39 @@ sf::Vector2f Entity::GetVelocity() const
 
 void Entity::Accelerate(sf::Vector2f velocity)
 {
-    m_velocity += velocity;
+	m_velocity += velocity;
+	
+	RegulatePlayerSpeed();
 }
+
 
 void Entity::Accelerate(float vx, float vy)
 {
-    m_velocity.x += vx;
-    m_velocity.y += vy;
+	m_velocity.x += vx;
+	m_velocity.y += vy;
 }
+
+/**
+ * Apply a "friction" to the entity's velocity. This allow the entity to slow down over time if the player do not press any key.
+ * This is to apply a "drag" effect in space to the entity and make the controls more challenging.
+ * For now the frictionIntensity is set to 0.1f, which means that the entity will slow down by 10% of its current velocity every time this methods is called.
+ * @param No parameters
+ * @return No return value
+ */
+void Entity::ApplyFriction()
+{
+    float frictionIntensity = 0.01f;
+    m_velocity.x *= (1.f - frictionIntensity);
+    m_velocity.y *= (1.f - frictionIntensity);
+}
+
+void Entity::Rotate(sf::Vector2f velocity)
+{
+	float PI = 3.14159265f;
+	float angle = std::atan2(velocity.x, -velocity.y);
+	setRotation(angle * 180.f / PI);
+}
+
 
 int Entity::GetHitPoints() const
 {
@@ -64,4 +93,31 @@ bool Entity::IsDestroyed() const
 void Entity::UpdateCurrent(sf::Time dt, CommandQueue& commands)
 {
     move(m_velocity * dt.asSeconds());
+}
+
+void Entity::RegulatePlayerSpeed()
+{
+	//limite the speed of the player
+	float maxSpeed = 200.f;
+	if (abs(m_velocity.x) > maxSpeed)
+	{
+		m_velocity.x = maxSpeed * (m_velocity.x / abs(m_velocity.x)); //keep sign
+	}
+	if (abs(m_velocity.y) > maxSpeed)
+	{
+		m_velocity.y = maxSpeed * (m_velocity.y / abs(m_velocity.y)); //keep sign
+	}
+	
+
+	//if close to 0, set to 0
+	float difference = 4.f;
+	if (abs(m_velocity.x) < difference)
+	{
+		m_velocity.x = 0;
+	}
+	if (abs(m_velocity.y) < difference)
+	{
+		m_velocity.y = 0;
+	}
+	
 }

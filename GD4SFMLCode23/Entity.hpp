@@ -1,7 +1,8 @@
 #pragma once
 #include "SceneNode.hpp"
 #include "CommandQueue.hpp"
-
+// HUGO REY D00262075 : changes to cap the velocity of the entity and add friction to the entity
+// Add a rotate method to the entity that will be used by the player to rotate the entity in the direction of its velocity
 class Entity : public SceneNode
 {
 public:
@@ -11,6 +12,9 @@ public:
 	sf::Vector2f GetVelocity() const;
 	void Accelerate(sf::Vector2f velocity);
 	void Accelerate(float vx, float vy);
+	
+	void ApplyFriction();
+	void Rotate(sf::Vector2f velocity);
 
 	int GetHitPoints() const;
 	void Repair(unsigned int points);
@@ -23,6 +27,7 @@ protected:
 
 private:
 	sf::Vector2f m_velocity;
+	void RegulatePlayerSpeed();
 	unsigned int m_hitpoints;
 };
 
