@@ -1,16 +1,50 @@
 #pragma once
+
+
 #include "Texture.hpp"
 #include "Font.hpp"
 
 
+// Forward declaration of SFML classes
 namespace sf
 {
 	class Texture;
 	class Font;
 }
 
-template<typename Resouce, typename Identifier>
+namespace Textures
+{
+	enum ID
+	{
+		Eagle,
+		Raptor,
+		Avenger,
+		Bullet,
+		Missile,
+		Desert,
+		HealthRefill,
+		MissileRefill,
+		FireSpread,
+		FireRate,
+		TitleScreen,
+		ButtonNormal,
+		ButtonSelected,
+		ButtonPressed
+	};
+}
+
+namespace Fonts
+{
+	enum ID
+	{
+		Main,
+	};
+}
+
+// Forward declaration and a few type definitions
+template <typename Resource, typename Identifier>
 class ResourceHolder;
 
-typedef ResourceHolder < sf::Texture, Texture> TextureHolder;
-typedef ResourceHolder < sf::Font, Font> FontHolder;
+typedef ResourceHolder<sf::Texture, Textures::ID>	TextureHolder;
+typedef ResourceHolder<sf::Font, Fonts::ID>			FontHolder;
+

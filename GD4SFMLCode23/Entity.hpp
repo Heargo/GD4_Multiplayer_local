@@ -4,10 +4,6 @@
 // HUGO REY D00262075 : changes to cap the velocity of the entity and add friction to the entity
 // Add a rotate method to the entity that will be used by the player to rotate the entity in the direction of its velocity
 
-#ifndef BOOK_ENTITY_HPP
-#define BOOK_ENTITY_HPP
-
-#include <Book/SceneNode.hpp>
 //Berk: Added BookEntity for Shooting
 class Entity : public SceneNode
 {
@@ -37,4 +33,3 @@ private:
 	unsigned int m_hitpoints;
 };
 
-#endif // BOOK_ENTITY_HPP

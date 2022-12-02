@@ -5,5 +5,9 @@ enum class Action
 	kMoveRight,
 	kMoveUp,
 	kMoveDown,
+
+	kFire,
+	kMissile,
+
 	kActionCount
 };

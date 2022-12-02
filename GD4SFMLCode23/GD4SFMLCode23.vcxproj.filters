@@ -90,6 +90,9 @@
     <ClCompile Include="TextNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Projectile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Texture.hpp">
@@ -206,9 +209,18 @@
     <ClInclude Include="TextNode.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Category.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Projectile.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ResourceHolder.inl">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Utility.inl">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>

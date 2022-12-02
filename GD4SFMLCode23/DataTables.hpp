@@ -1,8 +1,13 @@
 #pragma once
+
 #include <functional>
 #include <vector>
 #include <SFML/System/Time.hpp>
 #include "ResourceIdentifiers.hpp"
+
+#include "ResourceIdentifiers.hpp"
+#include <vector>
+#include <functional>
 
 class Aircraft;
 
@@ -35,9 +40,8 @@ struct PickupData
 {
 	std::function<void(Aircraft&)> m_action;
 	Texture m_texture;
-};
+}; 
 
 std::vector<AircraftData> InitializeAircraftData();
 std::vector<ProjectileData> InitializeProjectileData();
 std::vector<PickupData> InitializePickupData();
-

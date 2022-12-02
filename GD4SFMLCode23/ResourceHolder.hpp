@@ -1,4 +1,6 @@
 #pragma once
+
+
 #include <map>
 #include <string>
 #include <memory>
@@ -21,5 +23,6 @@ private:
 };
 
 #include "ResourceHolder.inl"
+
 
 
