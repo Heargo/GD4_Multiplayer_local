@@ -1,6 +1,12 @@
 #pragma once
+#ifndef BOOK_COMMAND_HPP
+#define BOOK_COMMAND_HPP
+
 #include "ReceiverCategories.hpp"
+#include <Book/Category.hpp>
+
 #include <SFML/System/Time.hpp>
+
 #include <functional>
 #include <cassert>
 
@@ -26,4 +32,4 @@ DerivedAction(Function fn)
 		fn(static_cast<GameObject&>(node), dt);
 	};
 }
-
+#endif // BOOK_COMMAND_HPP

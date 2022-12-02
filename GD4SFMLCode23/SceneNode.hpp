@@ -1,4 +1,8 @@
 #pragma once
+
+#ifndef BOOK_SCENENODE_HPP
+#define BOOK_SCENENODE_HPP
+
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/Transformable.hpp>
@@ -45,4 +49,5 @@ private:
 	SceneNode* m_parent;
 
 };
+#endif // BOOK_SCENENODE_HPP
 
