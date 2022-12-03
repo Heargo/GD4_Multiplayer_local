@@ -2,9 +2,8 @@
 enum class Texture
 {
 	kDesert,
-	kEagle,
-	kRaptor,
-	kAvenger,
+	kPlayer1,
+	kPlayer2,
 	kMissile,
 	kTitleScreen,
 	kButtonNormal,
