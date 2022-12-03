@@ -1,3 +1,4 @@
+// HUGO REY D00262075 : remove no necessary enum for the game
 #pragma once
 enum class ReceiverCategories
 {

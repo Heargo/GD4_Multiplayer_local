@@ -1,3 +1,5 @@
+// HUGO REY D00262075 : add SpawnAsteroides function to spawn the asteroids in the limit of the world.
+
 #pragma once
 #include "ResourceHolder.hpp"
 #include "ResourceIdentifiers.hpp"

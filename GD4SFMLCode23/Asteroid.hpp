@@ -1,6 +1,8 @@
 //HUGO REY D00262075 : Asteroid are entity of random size in the game, the are slowly rotating.
+//to implement : 
 //They do damage to the player if they collide with it. The damage is proportional to the velocity of the player.
 //The player can destroy them by shooting them with the missiles.
+
 #pragma once
 #include "Entity.hpp"
 #include "AircraftType.hpp"

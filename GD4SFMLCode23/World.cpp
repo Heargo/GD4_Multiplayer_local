@@ -1,5 +1,10 @@
-//HUGO REY D00262075 :apply friction to the player every update call and load the texture for the player and bg
-//Add some parallax effect to background
+//HUGO REY D00262075 :
+//apply friction to the player every update call and load the texture for the player and bg
+//add 2 player to the game
+//Make the camera follow a center point between 2 players
+//add asteroids in the game.
+//changes textures for aircraft and background
+
 #include "World.hpp"
 #include <iostream>
 

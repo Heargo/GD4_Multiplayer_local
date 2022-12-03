@@ -1,4 +1,5 @@
 // HUGO REY D00262075 : changes name of variable in InitializeActions to make it fit what's happening (player increase acceleration)
+// add second player to the game (player 2) wich include new actions and new controls
 
 
 #include "Player.hpp"

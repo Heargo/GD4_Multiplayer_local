@@ -1,3 +1,5 @@
+// HUGO REY D00262075 : add actions for 2 players
+
 #pragma once
 enum class Action
 {

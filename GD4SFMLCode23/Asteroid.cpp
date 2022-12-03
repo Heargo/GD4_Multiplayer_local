@@ -1,3 +1,5 @@
+//HUGO REY D00262075 : Create the asteroid class.
+
 #include "Asteroid.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
 #include "ResourceHolder.hpp"

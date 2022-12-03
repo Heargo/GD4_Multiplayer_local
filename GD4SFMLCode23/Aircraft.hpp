@@ -1,3 +1,4 @@
+//HUGO REY D00262075 : add GetType() to know if aircraft is player 1 or 2
 #pragma once
 
 #include "Entity.hpp"

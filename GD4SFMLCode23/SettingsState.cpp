@@ -1,3 +1,5 @@
+// HUGO REY D00262075 : update setting state to add the second player controls
+
 #include "SettingsState.hpp"
 #include "Utility.hpp"
 #include "ResourceHolder.hpp"
