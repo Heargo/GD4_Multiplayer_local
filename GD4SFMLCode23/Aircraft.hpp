@@ -6,8 +6,6 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include "TextNode.hpp"
 
-#include <SFML/Graphics/Sprite.hpp>
-
 class Aircraft : public Entity
 {
 public:

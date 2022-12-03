@@ -26,7 +26,7 @@ Texture ToTextureID(AircraftType type)
 		return Texture::kPlayer2;
 		break;
 	}
-	return Texture::kEagle;
+	return Texture::kPlayer1;
 }
 
 Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontHolder& fonts) 
