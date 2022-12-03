@@ -1,18 +1,10 @@
 #pragma once
-#ifndef BOOK_AIRCRAFT_HPP
-#define BOOK_AIRCRAFT_HPP
 
 #include "Entity.hpp"
 #include "AircraftType.hpp"
 #include "ResourceIdentifiers.hpp"
 #include <SFML/Graphics/Sprite.hpp>
 #include "TextNode.hpp"
-
-#include <Book/Entity.hpp>
-#include <Book/Command.hpp>
-#include <Book/ResourceIdentifiers.hpp>
-#include <Book/Projectile.hpp>
-#include <Book/TextNode.hpp>
 
 #include <SFML/Graphics/Sprite.hpp>
 
@@ -45,4 +37,3 @@ private:
 	float m_travelled_distance;
 	int m_directions_index;
 };
-#endif // BOOK_AIRCRAFT_HPP
