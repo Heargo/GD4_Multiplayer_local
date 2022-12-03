@@ -1,4 +1,5 @@
-//HUGO REY D00262075 :apply friction to the player every update call
+//HUGO REY D00262075 :apply friction to the player every update call and load the texture for the player and bg
+//Add some parallax effect to background
 #include "World.hpp"
 
 
@@ -9,11 +10,17 @@ World::World(sf::RenderWindow& window, FontHolder& font)
 	,m_fonts(font)
 	,m_scenegraph()
 	,m_scene_layers()
-	,m_world_bounds(0.f, 0.f, m_camera.getSize().x, 2000.f)
-	,m_spawn_position(m_camera.getSize().x/2.f, m_world_bounds.height - m_camera.getSize().y/2.f)
+	,m_world_bounds(0.f,0.f, 2000.f, 2000.f) //make the background image bigger that canvas
+	,m_spawn_position()
 	,m_scrollspeed(-50.f)
 	,m_player_aircraft(nullptr)
 {
+
+	//center spawn position
+	m_spawn_position.x = m_world_bounds.width / 2.f;
+	m_spawn_position.y = m_world_bounds.height / 2.f;
+	
+
 	LoadTextures();
 	BuildScene();
 
@@ -23,23 +30,29 @@ World::World(sf::RenderWindow& window, FontHolder& font)
 
 void World::Update(sf::Time dt)
 {
-	//Scroll the world
-	//m_camera.move(0, m_scrollspeed * dt.asSeconds());
+	//Scroll the world with a parallax effect depending of player 1 position
+	float parallax = 0.1f;
+	sf::Vector2f velocity = m_player_aircraft->GetVelocity();
+	//get length of vector
+	float length = std::sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
 	
-	//m_player_aircraft->SetVelocity(0.f, 0.f);
+	//move the background if the player goes fast enough
+	if(length > 50.f)
+		m_camera.move(velocity.x * parallax * dt.asSeconds(), velocity.y * parallax * dt.asSeconds());
+	
 
 	//Forward the commands to the scenegraph, sort out velocity
 	while (!m_command_queue.IsEmpty())
 	{
 		m_scenegraph.OnCommand(m_command_queue.Pop(), dt);
 	}
-	//AdaptPlayerVelocity();
 	
 	//apply friction to the player movement
+	AdaptPlayerPosition();
 	m_player_aircraft->ApplyFriction();
 
 	m_scenegraph.Update(dt, m_command_queue);
-	AdaptPlayerPosition();
+	
 }
 
 void World::Draw()
@@ -56,7 +69,7 @@ CommandQueue& World::GetCommandQueue()
 void World::LoadTextures()
 {
 	//load background texture
-	m_textures.Load(Texture::kDesert, "Media/Textures/Desert.png");
+	m_textures.Load(Texture::kBackground, "Media/Textures/greenNebula.png");
 	//load player 1 
 	m_textures.Load(Texture::kPlayer1, "Media/Textures/Spaceships/01/Spaceship_01_BLUE.png");
 	m_textures.Load(Texture::kPlayer2, "Media/Textures/Spaceships/01/Spaceship_01_RED.png");
@@ -74,7 +87,7 @@ void World::BuildScene()
 	}
 
 	//Prepare the background
-	sf::Texture& texture = m_textures.Get(Texture::kDesert);
+	sf::Texture& texture = m_textures.Get(Texture::kBackground);
 	sf::IntRect textureRect(m_world_bounds);
 	texture.setRepeated(true);
 
@@ -91,20 +104,11 @@ void World::BuildScene()
 
 	m_scene_layers[static_cast<int>(Layers::kAir)]->AttachChild(std::move(leader));
 
-	/*std::unique_ptr<Aircraft> left_escort(new Aircraft(AircraftType::kRaptor, m_textures, m_fonts));
-	left_escort->setPosition(-80.f, 50.f);
-	m_player_aircraft->AttachChild(std::move(left_escort));
-
-	std::unique_ptr<Aircraft> right_escort(new Aircraft(AircraftType::kRaptor, m_textures, m_fonts));
-	right_escort->setPosition(80.f, 50.f);
-	m_player_aircraft->AttachChild(std::move(right_escort));*/
-
-
 }
 
 void World::AdaptPlayerPosition()
 {
-	//Keep the player on the sceen 
+	//Keep the player on the scene 
 	sf::FloatRect view_bounds(m_camera.getCenter() - m_camera.getSize() / 2.f, m_camera.getSize());
 	const float border_distance = 40.f;
 

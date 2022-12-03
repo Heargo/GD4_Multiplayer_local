@@ -1,3 +1,5 @@
+// HUGO REY D00262075 : remove useless data (AI) and switch textures
+
 #include "DataTables.hpp"
 #include "AircraftType.hpp"
 #include "Aircraft.hpp"
@@ -11,7 +13,7 @@ std::vector<AircraftData> InitializeAircraftData()
     data[static_cast<int>(AircraftType::kEagle)].m_hitpoints = 100;
     data[static_cast<int>(AircraftType::kEagle)].m_speed = 200.f;
     data[static_cast<int>(AircraftType::kEagle)].m_fire_interval = sf::seconds(1);
-    data[static_cast<int>(AircraftType::kEagle)].m_texture = Texture::kEagle;
+    data[static_cast<int>(AircraftType::kEagle)].m_texture = Texture::kPlayer1;
 
     return data;
 }
