@@ -55,9 +55,12 @@ CommandQueue& World::GetCommandQueue()
 
 void World::LoadTextures()
 {
-	m_textures.Load(Texture::kEagle, "Media/Textures/Eagle.png");
-	m_textures.Load(Texture::kRaptor, "Media/Textures/Raptor.png");
+	//load background texture
 	m_textures.Load(Texture::kDesert, "Media/Textures/Desert.png");
+	//load player 1 
+	m_textures.Load(Texture::kPlayer1, "Media/Textures/Spaceships/01/Spaceship_01_BLUE.png");
+	m_textures.Load(Texture::kPlayer2, "Media/Textures/Spaceships/01/Spaceship_01_RED.png");
+	
 }
 
 void World::BuildScene()

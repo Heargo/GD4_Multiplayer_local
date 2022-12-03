@@ -13,27 +13,6 @@ std::vector<AircraftData> InitializeAircraftData()
     data[static_cast<int>(AircraftType::kEagle)].m_fire_interval = sf::seconds(1);
     data[static_cast<int>(AircraftType::kEagle)].m_texture = Texture::kEagle;
 
-    data[static_cast<int>(AircraftType::kRaptor)].m_hitpoints = 20;
-    data[static_cast<int>(AircraftType::kRaptor)].m_speed = 80.f;
-    data[static_cast<int>(AircraftType::kRaptor)].m_fire_interval = sf::Time::Zero;
-    data[static_cast<int>(AircraftType::kRaptor)].m_texture = Texture::kRaptor;
-
-    //AI
-    data[static_cast<int>(AircraftType::kRaptor)].m_directions.emplace_back(Direction(+45.f, 80.f));
-    data[static_cast<int>(AircraftType::kRaptor)].m_directions.emplace_back(Direction(-45.f, 160.f));
-    data[static_cast<int>(AircraftType::kAvenger)].m_directions.emplace_back(Direction(+45.f, 80.f));
-
-    data[static_cast<int>(AircraftType::kAvenger)].m_hitpoints = 40;
-    data[static_cast<int>(AircraftType::kAvenger)].m_speed = 50.f;
-    data[static_cast<int>(AircraftType::kAvenger)].m_fire_interval = sf::seconds(2);
-    data[static_cast<int>(AircraftType::kAvenger)].m_texture = Texture::kAvenger;
-
-    //AI
-    data[static_cast<int>(AircraftType::kAvenger)].m_directions.emplace_back(Direction(+45.f, 50.f));
-    data[static_cast<int>(AircraftType::kAvenger)].m_directions.emplace_back(Direction(0.f, 50.f));
-    data[static_cast<int>(AircraftType::kAvenger)].m_directions.emplace_back(Direction(-45.f, 100.f));
-    data[static_cast<int>(AircraftType::kAvenger)].m_directions.emplace_back(Direction(0.f, 50.f));
-    data[static_cast<int>(AircraftType::kAvenger)].m_directions.emplace_back(Direction(+45.f, 50.f));
     return data;
 }
 

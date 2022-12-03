@@ -17,10 +17,10 @@ Texture ToTextureID(AircraftType type)
 	switch (type)
 	{
 	case AircraftType::kEagle:
-		return Texture::kEagle;
+		return Texture::kPlayer1;
 		break;
 	case AircraftType::kRaptor:
-		return Texture::kRaptor;
+		return Texture::kPlayer2;
 		break;
 	}
 	return Texture::kEagle;
