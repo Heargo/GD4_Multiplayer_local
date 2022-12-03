@@ -11,24 +11,36 @@
 
 struct AircraftMover
 {
-    AircraftMover(float vx, float vy)
+	AircraftMover(float vx, float vy, AircraftType type)
         : velocity(vx, vy)
-    {}
+    {
+		this->type = type;
+    }
     void operator()(Aircraft& aircraft, sf::Time) const
     {
-        aircraft.Accelerate(velocity);
-        aircraft.Rotate(velocity);
+        if (type == aircraft.GetType())
+        {
+            aircraft.Accelerate(velocity);
+            aircraft.Rotate(velocity);
+        };
     }
     sf::Vector2f velocity;
+	AircraftType type;
 };
 
 Player::Player()
 {
-    //Set initial key bindings
-    m_key_binding[sf::Keyboard::Left] = Action::kMoveLeft;
-    m_key_binding[sf::Keyboard::Right] = Action::kMoveRight;
-    m_key_binding[sf::Keyboard::Up] = Action::kMoveUp;
-    m_key_binding[sf::Keyboard::Down] = Action::kMoveDown;
+    //Set initial key bindings for player 1
+    m_key_binding[sf::Keyboard::Left] = Action::kMoveLeft1;
+    m_key_binding[sf::Keyboard::Right] = Action::kMoveRight1;
+    m_key_binding[sf::Keyboard::Up] = Action::kMoveUp1;
+    m_key_binding[sf::Keyboard::Down] = Action::kMoveDown1;
+
+	//player 2
+    m_key_binding[sf::Keyboard::A] = Action::kMoveLeft2;
+    m_key_binding[sf::Keyboard::D] = Action::kMoveRight2;
+    m_key_binding[sf::Keyboard::W] = Action::kMoveUp2;
+    m_key_binding[sf::Keyboard::S] = Action::kMoveDown2;
 
     //Set initial action bindings
     InitializeActions();
@@ -99,20 +111,29 @@ void Player::InitializeActions()
 {
     //TODO Normalize to avoid faster movement along diagonals
     const float kPlayerAcceleration = 5.f;
-    m_action_binding[Action::kMoveLeft].action = DerivedAction<Aircraft>(AircraftMover(-kPlayerAcceleration, 0.f));
-    m_action_binding[Action::kMoveRight].action = DerivedAction<Aircraft>(AircraftMover(kPlayerAcceleration, 0.f));
-    m_action_binding[Action::kMoveUp].action = DerivedAction<Aircraft>(AircraftMover(0.f, -kPlayerAcceleration));
-    m_action_binding[Action::kMoveDown].action = DerivedAction<Aircraft>(AircraftMover(0.f, kPlayerAcceleration));
+    m_action_binding[Action::kMoveLeft1].action = DerivedAction<Aircraft>(AircraftMover(-kPlayerAcceleration, 0.f, AircraftType::kPlayer1));
+    m_action_binding[Action::kMoveRight1].action = DerivedAction<Aircraft>(AircraftMover(kPlayerAcceleration, 0.f, AircraftType::kPlayer1));
+    m_action_binding[Action::kMoveUp1].action = DerivedAction<Aircraft>(AircraftMover(0.f, -kPlayerAcceleration, AircraftType::kPlayer1));
+    m_action_binding[Action::kMoveDown1].action = DerivedAction<Aircraft>(AircraftMover(0.f, kPlayerAcceleration, AircraftType::kPlayer1));
+
+    m_action_binding[Action::kMoveLeft2].action = DerivedAction<Aircraft>(AircraftMover(-kPlayerAcceleration, 0.f, AircraftType::kPlayer2));
+    m_action_binding[Action::kMoveRight2].action = DerivedAction<Aircraft>(AircraftMover(kPlayerAcceleration, 0.f, AircraftType::kPlayer2));
+    m_action_binding[Action::kMoveUp2].action = DerivedAction<Aircraft>(AircraftMover(0.f, -kPlayerAcceleration, AircraftType::kPlayer2));
+    m_action_binding[Action::kMoveDown2].action = DerivedAction<Aircraft>(AircraftMover(0.f, kPlayerAcceleration, AircraftType::kPlayer2));
 }
 
 bool Player::IsRealtimeAction(Action action)
 {
     switch (action)
     {
-    case Action::kMoveDown:
-    case Action::kMoveUp:
-    case Action::kMoveLeft:
-    case Action::kMoveRight:
+    case Action::kMoveDown1:
+    case Action::kMoveUp1:
+    case Action::kMoveLeft1:
+    case Action::kMoveRight1:
+    case Action::kMoveDown2:
+    case Action::kMoveUp2:
+    case Action::kMoveLeft2:
+    case Action::kMoveRight2:
         return true;
     default:
         return false;

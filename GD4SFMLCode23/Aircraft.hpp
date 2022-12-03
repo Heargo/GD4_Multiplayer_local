@@ -18,6 +18,7 @@ public:
 	void UpdateTexts();
 	void UpdateMovementPattern(sf::Time dt);
 	float GetMaxSpeed() const;
+	AircraftType GetType();
 
 private:
 	virtual void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;

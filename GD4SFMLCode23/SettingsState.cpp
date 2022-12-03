@@ -12,10 +12,16 @@ SettingsState::SettingsState(StateStack& stack, Context context)
 	m_background_sprite.setTexture(context.textures->Get(Texture::kTitleScreen));
 
 	// Build key binding buttons and labels
-	AddButtonLabel(Action::kMoveLeft, 150.f, "Move Left", context);
-	AddButtonLabel(Action::kMoveRight, 200.f, "Move Right", context);
-	AddButtonLabel(Action::kMoveUp, 250.f, "Move Up", context);
-	AddButtonLabel(Action::kMoveDown, 300.f, "Move Down", context);
+
+	AddButtonLabel(Action::kMoveLeft1, 150.f, "Move Left", context);
+	AddButtonLabel(Action::kMoveRight1, 200.f, "Move Right", context);
+	AddButtonLabel(Action::kMoveUp1, 250.f, "Move Up", context);
+	AddButtonLabel(Action::kMoveDown1, 300.f, "Move Down", context);
+
+	AddButtonLabel(Action::kMoveLeft2, 150.f, "Move Left", context);
+	AddButtonLabel(Action::kMoveRight2, 200.f, "Move Right", context);
+	AddButtonLabel(Action::kMoveUp2, 250.f, "Move Up", context);
+	AddButtonLabel(Action::kMoveDown2, 300.f, "Move Down", context);
 
 	UpdateLabels();
 

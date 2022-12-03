@@ -29,7 +29,7 @@ public:
 private:
 	void LoadTextures();
 	void BuildScene();
-	void AdaptPlayerPosition();
+	void AdaptPlayerPosition(Aircraft* player);
 	void AdaptPlayerVelocity();
 	void SpawnAsteroides(int nbAsteroides);
 	sf::Vector2f GetRandomPosition(int size,std::vector<sf::Vector2f> existingAsteroides,std::vector<int> existingAsteroidesSize);
@@ -47,6 +47,7 @@ private:
 	sf::FloatRect m_world_bounds;
 	sf::Vector2f m_spawn_position;
 	float m_scrollspeed;
-	Aircraft* m_player_aircraft;
+	Aircraft* m_player_1;
+	Aircraft* m_player_2;
 };
 

@@ -10,10 +10,15 @@ std::vector<AircraftData> InitializeAircraftData()
 {
     std::vector<AircraftData> data(static_cast<int>(AircraftType::kAircraftCount));
 
-    data[static_cast<int>(AircraftType::kEagle)].m_hitpoints = 100;
-    data[static_cast<int>(AircraftType::kEagle)].m_speed = 200.f;
-    data[static_cast<int>(AircraftType::kEagle)].m_fire_interval = sf::seconds(1);
-    data[static_cast<int>(AircraftType::kEagle)].m_texture = Texture::kPlayer1;
+    data[static_cast<int>(AircraftType::kPlayer1)].m_hitpoints = 100;
+    data[static_cast<int>(AircraftType::kPlayer1)].m_speed = 200.f;
+    data[static_cast<int>(AircraftType::kPlayer1)].m_fire_interval = sf::seconds(1);
+    data[static_cast<int>(AircraftType::kPlayer1)].m_texture = Texture::kPlayer1;
+
+    data[static_cast<int>(AircraftType::kPlayer2)].m_hitpoints = 100;
+    data[static_cast<int>(AircraftType::kPlayer2)].m_speed = 200.f;
+    data[static_cast<int>(AircraftType::kPlayer2)].m_fire_interval = sf::seconds(1);
+    data[static_cast<int>(AircraftType::kPlayer2)].m_texture = Texture::kPlayer2;
 
     return data;
 }

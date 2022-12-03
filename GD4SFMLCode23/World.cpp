@@ -13,7 +13,8 @@ World::World(sf::RenderWindow& window, FontHolder& font)
 	,m_world_bounds(0.f,0.f, 1200.f, 1200.f) //make the background image bigger that canvas
 	,m_spawn_position()
 	,m_scrollspeed(-50.f)
-	,m_player_aircraft(nullptr)
+	, m_player_1(nullptr)
+	, m_player_2(nullptr)
 {
 
 	//center spawn position
@@ -25,13 +26,13 @@ World::World(sf::RenderWindow& window, FontHolder& font)
 	BuildScene();
 
 	m_camera.setCenter(m_spawn_position);
-	m_player_aircraft->SetVelocity(0.f, 0.f);
+	m_player_1->SetVelocity(0.f, 0.f);
 }
 
 void World::Update(sf::Time dt)
 {
 	//make camera follow player
-	m_camera.setCenter(m_player_aircraft->getPosition());
+	m_camera.setCenter(m_player_1->getPosition());
 	
 
 	//Forward the commands to the scenegraph, sort out velocity
@@ -41,8 +42,10 @@ void World::Update(sf::Time dt)
 	}
 	
 	//apply friction to the player movement
-	AdaptPlayerPosition();
-	m_player_aircraft->ApplyFriction();
+	AdaptPlayerPosition(m_player_1);
+	AdaptPlayerPosition(m_player_2);
+	m_player_1->ApplyFriction();
+	m_player_2->ApplyFriction();
 
 	m_scenegraph.Update(dt, m_command_queue);
 	
@@ -98,56 +101,62 @@ void World::BuildScene()
 	background_sprite->setPosition(m_world_bounds.left - sizeIncrease/2, m_world_bounds.top - sizeIncrease / 2);
 	m_scene_layers[static_cast<int>(Layers::kBackground)]->AttachChild(std::move(background_sprite));
 
-	//Add player's aircraft
-	std::unique_ptr<Aircraft> leader(new Aircraft(AircraftType::kEagle, m_textures, m_fonts));
-	m_player_aircraft = leader.get();
-	m_player_aircraft->setPosition(m_spawn_position);
-	//m_player_aircraft->SetVelocity(40.f, m_scrollspeed);
+	//Add player's 1 aircraft
+	std::unique_ptr<Aircraft> player1(new Aircraft(AircraftType::kPlayer1, m_textures, m_fonts));
+	m_player_1 = player1.get();
+	m_player_1->setPosition(m_spawn_position);
+	
+	//Add player's 2 aircraft
+	sf::Vector2f spawnPosition2 = m_spawn_position + sf::Vector2f(100.f, 0.f);
+	std::unique_ptr<Aircraft> player2(new Aircraft(AircraftType::kPlayer2, m_textures, m_fonts));
+	m_player_2 = player2.get();
+	m_player_2->setPosition(spawnPosition2);
 
-	m_scene_layers[static_cast<int>(Layers::kAir)]->AttachChild(std::move(leader));
+	m_scene_layers[static_cast<int>(Layers::kAir)]->AttachChild(std::move(player1));
+	m_scene_layers[static_cast<int>(Layers::kAir)]->AttachChild(std::move(player2));
 
 	//add 30 asteroids
 	SpawnAsteroides(30);
 
 }
 
-void World::AdaptPlayerPosition()
+void World::AdaptPlayerPosition(Aircraft* player)
 {
 	sf::FloatRect view_bounds(m_camera.getCenter() - m_camera.getSize() / 2.f, m_camera.getSize());
 	sf::FloatRect world_bounds = (m_spawn_position, m_world_bounds);
 	const float border_distance = 40.f;
 
 	//keep player in the world
-	sf::Vector2f position = m_player_aircraft->getPosition();
+	sf::Vector2f position = player->getPosition();
 	position.x = std::max(position.x, world_bounds.left + border_distance);
 	position.x = std::min(position.x, world_bounds.left + world_bounds.width - border_distance);
 	position.y = std::max(position.y, world_bounds.top + border_distance);
 	position.y = std::min(position.y, world_bounds.top + world_bounds.height - border_distance);
-	m_player_aircraft->setPosition(position);
+	player->setPosition(position);
 
 
 	//Keep the player on the view scene 
-	position = m_player_aircraft->getPosition();
+	position = player->getPosition();
 	position.x = std::max(position.x, view_bounds.left + border_distance);
 	position.x = std::min(position.x, view_bounds.left + view_bounds.width - border_distance);
 	position.y = std::max(position.y, view_bounds.top + border_distance);
 	position.y = std::min(position.y, view_bounds.top + view_bounds.height - border_distance);
-	m_player_aircraft->setPosition(position);
+	player->setPosition(position);
 
 }
 
 void World::AdaptPlayerVelocity()
 {
-	sf::Vector2f velocity = m_player_aircraft->GetVelocity();
+	sf::Vector2f velocity = m_player_1->GetVelocity();
 
 	//If they are moving diagonally divide by root 2
 	if (velocity.x != 0.f && velocity.y != 0.f)
 	{
-		m_player_aircraft->SetVelocity(velocity / std::sqrt(2.f));
+		m_player_1->SetVelocity(velocity / std::sqrt(2.f));
 	}
 
 	//Add scrolling velocity
-	//m_player_aircraft->Accelerate(0.f, m_scrollspeed);
+	//m_player_1->Accelerate(0.f, m_scrollspeed);
 }
 
 void World::SpawnAsteroides(int nbAsteroides)

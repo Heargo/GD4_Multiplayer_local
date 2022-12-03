@@ -19,10 +19,10 @@ Texture ToTextureID(AircraftType type)
 {
 	switch (type)
 	{
-	case AircraftType::kEagle:
+	case AircraftType::kPlayer1:
 		return Texture::kPlayer1;
 		break;
-	case AircraftType::kRaptor:
+	case AircraftType::kPlayer2:
 		return Texture::kPlayer2;
 		break;
 	}
@@ -67,8 +67,12 @@ unsigned int Aircraft::GetCategory() const
 {
 	switch (m_type)
 	{
-	case AircraftType::kEagle:
+	case AircraftType::kPlayer1:
 		return static_cast<unsigned int>(ReceiverCategories::kPlayerAircraft);
+		
+	case AircraftType::kPlayer2:
+		return static_cast<unsigned int>(ReceiverCategories::kPlayerAircraft);
+		
 	default:
 		return static_cast<unsigned int>(ReceiverCategories::kEnemyAircraft);
 
@@ -144,6 +148,11 @@ void Aircraft::UpdateMovementPattern(sf::Time dt)
 float Aircraft::GetMaxSpeed() const
 {
 	return Table[static_cast<int>(m_type)].m_speed;
+}
+
+AircraftType Aircraft::GetType()
+{
+	return m_type;
 }
 
 void Aircraft::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
