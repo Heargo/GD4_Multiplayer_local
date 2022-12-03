@@ -4,6 +4,7 @@
 #include "SceneNode.hpp"
 #include "SpriteNode.hpp"
 #include "Aircraft.hpp"
+#include "Asteroid.hpp"
 #include "Layers.hpp"
 
 #include <SFML/System/NonCopyable.hpp>
@@ -30,6 +31,8 @@ private:
 	void BuildScene();
 	void AdaptPlayerPosition();
 	void AdaptPlayerVelocity();
+	void SpawnAsteroides(int nbAsteroides);
+	sf::Vector2f GetRandomPosition(int size,std::vector<sf::Vector2f> existingAsteroides,std::vector<int> existingAsteroidesSize);
 
 private:
 	sf::RenderWindow& m_window;

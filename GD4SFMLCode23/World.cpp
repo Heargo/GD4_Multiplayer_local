@@ -1,7 +1,7 @@
 //HUGO REY D00262075 :apply friction to the player every update call and load the texture for the player and bg
 //Add some parallax effect to background
 #include "World.hpp"
-
+#include <iostream>
 
 World::World(sf::RenderWindow& window, FontHolder& font)
 	:m_window(window)
@@ -10,7 +10,7 @@ World::World(sf::RenderWindow& window, FontHolder& font)
 	,m_fonts(font)
 	,m_scenegraph()
 	,m_scene_layers()
-	,m_world_bounds(0.f,0.f, 2000.f, 2000.f) //make the background image bigger that canvas
+	,m_world_bounds(0.f,0.f, 1200.f, 1200.f) //make the background image bigger that canvas
 	,m_spawn_position()
 	,m_scrollspeed(-50.f)
 	,m_player_aircraft(nullptr)
@@ -30,15 +30,8 @@ World::World(sf::RenderWindow& window, FontHolder& font)
 
 void World::Update(sf::Time dt)
 {
-	//Scroll the world with a parallax effect depending of player 1 position
-	float parallax = 0.1f;
-	sf::Vector2f velocity = m_player_aircraft->GetVelocity();
-	//get length of vector
-	float length = std::sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
-	
-	//move the background if the player goes fast enough
-	if(length > 50.f)
-		m_camera.move(velocity.x * parallax * dt.asSeconds(), velocity.y * parallax * dt.asSeconds());
+	//make camera follow player
+	m_camera.setCenter(m_player_aircraft->getPosition());
 	
 
 	//Forward the commands to the scenegraph, sort out velocity
@@ -70,9 +63,14 @@ void World::LoadTextures()
 {
 	//load background texture
 	m_textures.Load(Texture::kBackground, "Media/Textures/greenNebula.png");
-	//load player 1 
+	//load player 1 & 2
 	m_textures.Load(Texture::kPlayer1, "Media/Textures/Spaceships/01/Spaceship_01_BLUE.png");
 	m_textures.Load(Texture::kPlayer2, "Media/Textures/Spaceships/01/Spaceship_01_RED.png");
+
+	//load asteroide texture
+	m_textures.Load(Texture::kAsteroid, "Media/Textures/asteroid.png");
+
+	
 	
 }
 
@@ -89,35 +87,53 @@ void World::BuildScene()
 	//Prepare the background
 	sf::Texture& texture = m_textures.Get(Texture::kBackground);
 	sf::IntRect textureRect(m_world_bounds);
+	//expand textureRect to make the background bigger than the canvas
+	int sizeIncrease = 1000;
+	textureRect.width += sizeIncrease;
+	textureRect.height += sizeIncrease;
 	texture.setRepeated(true);
 
 	//Add the background sprite to the world
 	std::unique_ptr<SpriteNode> background_sprite(new SpriteNode(texture, textureRect));
-	background_sprite->setPosition(m_world_bounds.left, m_world_bounds.top);
+	background_sprite->setPosition(m_world_bounds.left - sizeIncrease/2, m_world_bounds.top - sizeIncrease / 2);
 	m_scene_layers[static_cast<int>(Layers::kBackground)]->AttachChild(std::move(background_sprite));
 
 	//Add player's aircraft
 	std::unique_ptr<Aircraft> leader(new Aircraft(AircraftType::kEagle, m_textures, m_fonts));
 	m_player_aircraft = leader.get();
 	m_player_aircraft->setPosition(m_spawn_position);
-	m_player_aircraft->SetVelocity(40.f, m_scrollspeed);
+	//m_player_aircraft->SetVelocity(40.f, m_scrollspeed);
 
 	m_scene_layers[static_cast<int>(Layers::kAir)]->AttachChild(std::move(leader));
+
+	//add 30 asteroids
+	SpawnAsteroides(30);
 
 }
 
 void World::AdaptPlayerPosition()
 {
-	//Keep the player on the scene 
 	sf::FloatRect view_bounds(m_camera.getCenter() - m_camera.getSize() / 2.f, m_camera.getSize());
+	sf::FloatRect world_bounds = (m_spawn_position, m_world_bounds);
 	const float border_distance = 40.f;
 
+	//keep player in the world
 	sf::Vector2f position = m_player_aircraft->getPosition();
+	position.x = std::max(position.x, world_bounds.left + border_distance);
+	position.x = std::min(position.x, world_bounds.left + world_bounds.width - border_distance);
+	position.y = std::max(position.y, world_bounds.top + border_distance);
+	position.y = std::min(position.y, world_bounds.top + world_bounds.height - border_distance);
+	m_player_aircraft->setPosition(position);
+
+
+	//Keep the player on the view scene 
+	position = m_player_aircraft->getPosition();
 	position.x = std::max(position.x, view_bounds.left + border_distance);
 	position.x = std::min(position.x, view_bounds.left + view_bounds.width - border_distance);
 	position.y = std::max(position.y, view_bounds.top + border_distance);
 	position.y = std::min(position.y, view_bounds.top + view_bounds.height - border_distance);
 	m_player_aircraft->setPosition(position);
+
 }
 
 void World::AdaptPlayerVelocity()
@@ -133,3 +149,80 @@ void World::AdaptPlayerVelocity()
 	//Add scrolling velocity
 	//m_player_aircraft->Accelerate(0.f, m_scrollspeed);
 }
+
+void World::SpawnAsteroides(int nbAsteroides)
+{
+	//list of existing asteroides position and size
+	std::vector<sf::Vector2f> existingAsteroides;
+	std::vector<int> existingAsteroidesSize;
+
+	//Spawn the asteroids
+	for (int i = 0; i < nbAsteroides; i++)
+	{
+		//get a random size between 50px and 200px with a step of 50px
+		int size = 50 * (rand() % 4 + 1);
+		
+		sf::Vector2f pos = GetRandomPosition(size, existingAsteroides, existingAsteroidesSize);
+
+		//skip if there is no valid position for this size. Get random position return a (0,0) if there where to many attemps 
+		if (pos == sf::Vector2f(0.f, 0.f)) continue;
+
+		//add pos and size to history
+		existingAsteroides.push_back(pos);
+		existingAsteroidesSize.push_back(size);
+		
+		//create it and add it to the scene
+		std::unique_ptr<Asteroid> asteroid(new Asteroid(size, m_textures));
+		asteroid->setPosition(pos);
+		m_scene_layers[static_cast<int>(Layers::kAir)]->AttachChild(std::move(asteroid));
+	}
+}
+
+sf::Vector2f World::GetRandomPosition(int size,std::vector<sf::Vector2f> existingAsteroides, std::vector<int> existingAsteroidesSize)
+{
+	
+	bool tooClose = false;
+	//margin in px
+	int margin = 30;
+
+	//position is within word size
+	int marginWorld = 50;
+	int xRange = (m_world_bounds.width / 2.f)  - marginWorld;
+	int yRange = (m_world_bounds.height / 2.f) - marginWorld;
+	float x = (rand() % (2 * xRange) - xRange) + m_spawn_position.x;
+	float y = (rand() % (2 * yRange) - yRange) + m_spawn_position.x;
+
+	int attemps = 0;
+
+	//while the position is too close from an existing asteriod, we try other position within 10 attemps limit.
+	do {
+		for (int j = 0; j < existingAsteroides.size(); j++)
+		{
+			float distance = std::sqrt((existingAsteroides[j].x - x) * (existingAsteroides[j].x - x) + (existingAsteroides[j].y - y) * (existingAsteroides[j].y - y));
+			if (distance <= existingAsteroidesSize[j] + size+ margin)
+			{
+				tooClose = true;
+				x = (rand() % (2 * xRange) - xRange) + m_spawn_position.x;
+				y = (rand() % (2 * yRange) - yRange) + m_spawn_position.x;
+				break;
+			}
+			else
+			{
+				tooClose = false;
+			}
+		}
+		attemps++;
+	} while (tooClose && attemps<10);
+
+	//return (0,0) position if there is no room for the asteroid of the size given.
+	if (attemps == 10)
+	{
+		x = 0.f;
+		y = 0.f;
+	}
+
+	return sf::Vector2f(x, y);
+}
+
+
+

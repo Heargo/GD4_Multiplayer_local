@@ -6,7 +6,7 @@ enum class Texture
 	kBackground,
 	kPlayer1,
 	kPlayer2,
-	kAsteroid,
+	kAsteroid, 
 	kAvenger,
 	kMissile,
 	kTitleScreen,
