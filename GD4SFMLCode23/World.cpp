@@ -31,8 +31,9 @@ World::World(sf::RenderWindow& window, FontHolder& font)
 
 void World::Update(sf::Time dt)
 {
-	//make camera follow player
-	m_camera.setCenter(m_player_1->getPosition());
+	//get camera to center between 2 players position
+	sf::Vector2f center = (m_player_1->getPosition() + m_player_2->getPosition()) / 2.f;
+	m_camera.setCenter(center);
 	
 
 	//Forward the commands to the scenegraph, sort out velocity
