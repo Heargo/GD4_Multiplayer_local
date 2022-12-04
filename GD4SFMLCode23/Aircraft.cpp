@@ -1,5 +1,5 @@
 // HUGO REY D00262075 : fix the maximum size of aircraft to 100px*100px
-
+// Add Fire() to shoot projectiles.
 
 #include "Aircraft.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -9,6 +9,8 @@
 #include "Texture.hpp"
 #include "DataTables.hpp"
 #include "Utility.hpp"
+#include <iostream>
+#include "ProjectileType.hpp"
 
 namespace
 {
@@ -40,6 +42,7 @@ Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontH
 	, m_missile_display(nullptr)
 	, m_travelled_distance(0.f)
 	, m_directions_index(0)
+	, m_textures(textures)
 {
 	sf::FloatRect bounds = m_sprite.getLocalBounds();
 	m_sprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
@@ -198,6 +201,37 @@ void Aircraft::UpdateMovementPattern(sf::Time dt)
 float Aircraft::GetMaxSpeed() const
 {
 	return Table[static_cast<int>(m_type)].m_speed;
+}
+
+void Aircraft::Fire()
+{
+	//print to console to check if firing
+	std::cout << "Firing" << std::endl;
+
+	//get the direction of the aircraft
+	float rotation = getRotation();
+	
+	//create a bullet
+	ProjectileType::Type bulletType;
+	switch (m_type)
+	{
+	case AircraftType::kPlayer1:
+		bulletType = ProjectileType::Type::kPlayer1Bullet;
+		break;
+	case AircraftType::kPlayer2:
+		bulletType = ProjectileType::Type::kPlayer2Bullet;
+		break;
+
+	default:
+		bulletType = ProjectileType::Type::kPlayer1Bullet;
+		break;
+	}
+
+	std::unique_ptr<ProjectileType> bullet(new ProjectileType(bulletType, m_textures));
+	bullet->setPosition(getPosition());
+	bullet->setRotation(rotation);
+	bullet->SetVelocity(GetVelocity());
+	
 }
 
 AircraftType Aircraft::GetType()

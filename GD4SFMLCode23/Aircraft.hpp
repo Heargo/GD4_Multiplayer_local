@@ -1,4 +1,5 @@
 //HUGO REY D00262075 : add GetType() to know if aircraft is player 1 or 2
+// add Fire() to shoot projectiles
 #pragma once
 
 #include "Entity.hpp"
@@ -19,6 +20,7 @@ public:
 	void UpdateTexts();
 	void UpdateMovementPattern(sf::Time dt);
 	float GetMaxSpeed() const;
+	void Fire();
 
 	AircraftType GetType();
 
@@ -38,5 +40,5 @@ private:
 	float m_travelled_distance;
 	int m_directions_index;
 
-
+	const TextureHolder& m_textures;
 };

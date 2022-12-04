@@ -1,3 +1,5 @@
+//HUGO REY D00262075 : fix errors 
+
 #pragma once
 
 #include "Entity.hpp"
@@ -14,31 +16,30 @@ enum class ProjectileType
 }; */
 
 
-class ProjectileType
+class ProjectileType : public Entity
 {
 public:
 	enum Type
 	{
-		kAlliedBullet,
-		kEnemyBullet,
-		kMissile,
+		kPlayer1Bullet,
+		kPlayer2Bullet,
 		kProjectileCount
 	};
 
 public:
-	ProjectileType(Type type, const TextureHolder& texture);
-	void guideTowards(sf::Vector2f position);
-	bool isGuided() const;
+	ProjectileType(ProjectileType::Type type, const TextureHolder& texture);
+	//void guideTowards(sf::Vector2f position);
+	//bool isGuided() const;
 	virtual unsigned int getCategory() const;
 	//virtual sf::FloatRect getBoundingRect const;
 	float getMaxSpeed() const;
 	int getDamage() const;
 
 private:
-	virtual void updateCurrent(sf::Time dt, CommandQueue& commands);
-	virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
+	virtual void UpdateCurrent(sf::Time dt, CommandQueue& commands);
+	virtual void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 private:
 	Type m_type;
 	sf::Sprite m_sprite;
-	sf::Vector2f m_targetDirection;
+	//sf::Vector2f m_targetDirection;
 };
