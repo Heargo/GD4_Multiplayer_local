@@ -8,6 +8,10 @@
 #include "World.hpp"
 #include <iostream>
 
+//Collision 
+//sf::FloatRect nextPos;
+//void sf::FloatRect::intersects();
+
 World::World(sf::RenderWindow& window, FontHolder& font)
 	:m_window(window)
 	,m_camera(window.getDefaultView())
@@ -33,6 +37,8 @@ World::World(sf::RenderWindow& window, FontHolder& font)
 	m_camera.setCenter(m_spawn_position);
 	m_player_1->SetVelocity(0.f, 0.f);
 }
+
+
 
 void World::Update(sf::Time dt)
 {
@@ -156,6 +162,27 @@ void World::AdaptPlayerPosition(Aircraft* player)
 
 }
 
+//Collision
+/*
+  for (auto& wall : walls)
+{
+	sf::FloatRect playerBounds = player.getGlobalBounds();
+	FloatRect wallBounds = wall.getGlobalBounds();
+	nextPos = player.getGlobalBounds()
+};
+
+
+	bool collision(const SceneNode& lhs, const SceneNode& rhs)
+	{
+		return lhs.getTransform().intersects(rhs.getTransform());
+	}
+
+
+*/
+
+
+
+
 void World::AdaptPlayerVelocity()
 {
 	sf::Vector2f velocity = m_player_1->GetVelocity();
@@ -242,6 +269,9 @@ sf::Vector2f World::GetRandomPosition(int size,std::vector<sf::Vector2f> existin
 	}
 
 	return sf::Vector2f(x, y);
+
+	
+	
 }
 
 
