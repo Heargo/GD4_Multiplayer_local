@@ -5,6 +5,7 @@
 #include "Player.hpp"
 #include "CommandQueue.hpp"
 #include "Aircraft.hpp"
+#include "ProjectileType.hpp"
 
 #include <map>
 #include <string>
@@ -121,15 +122,15 @@ void Player::InitializeActions()
     m_action_binding[Action::kMoveRight1].action = DerivedAction<Aircraft>(AircraftMover(kPlayerAcceleration, 0.f, AircraftType::kPlayer1));
     m_action_binding[Action::kMoveUp1].action = DerivedAction<Aircraft>(AircraftMover(0.f, -kPlayerAcceleration, AircraftType::kPlayer1));
     m_action_binding[Action::kMoveDown1].action = DerivedAction<Aircraft>(AircraftMover(0.f, kPlayerAcceleration, AircraftType::kPlayer1));
-    //Change Shoot action - aircraft mover when BulletShooter is successfully implemented
-    m_action_binding[Action::kShoot1].action = DerivedAction<Aircraft>(AircraftMover(0.f, kBulletAcceleration, AircraftType::kPlayer1));
+    
+    m_action_binding[Action::kShoot1].action = DerivedAction<Aircraft>(ProjectileType(kBulletAcceleration, -1, AircraftType::kPlayer1));
 
     m_action_binding[Action::kMoveLeft2].action = DerivedAction<Aircraft>(AircraftMover(-kPlayerAcceleration, 0.f, AircraftType::kPlayer2));
     m_action_binding[Action::kMoveRight2].action = DerivedAction<Aircraft>(AircraftMover(kPlayerAcceleration, 0.f, AircraftType::kPlayer2));
     m_action_binding[Action::kMoveUp2].action = DerivedAction<Aircraft>(AircraftMover(0.f, -kPlayerAcceleration, AircraftType::kPlayer2));
     m_action_binding[Action::kMoveDown2].action = DerivedAction<Aircraft>(AircraftMover(0.f, kPlayerAcceleration, AircraftType::kPlayer2));
-    //Change Shoot action - aircraft mover when BulletShooter is successfully implemented
-    m_action_binding[Action::kShoot2].action = DerivedAction<Aircraft>(AircraftMover(0.f,kBulletAcceleration, AircraftType::kPlayer2));
+    
+    m_action_binding[Action::kShoot2].action = DerivedAction<Aircraft>(ProjectileType(kBulletAcceleration, -1, AircraftType::kPlayer2));
 }
 
 bool Player::IsRealtimeAction(Action action)
