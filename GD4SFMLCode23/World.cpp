@@ -82,8 +82,7 @@ void World::LoadTextures()
 	//loads bullet texture
 	m_textures.Load(Texture::kBullet, "Media/Textures/Bullet.png");
 
-	
-	
+
 }
 
 void World::BuildScene()
@@ -110,14 +109,17 @@ void World::BuildScene()
 	background_sprite->setPosition(m_world_bounds.left - sizeIncrease/2, m_world_bounds.top - sizeIncrease / 2);
 	m_scene_layers[static_cast<int>(Layers::kBackground)]->AttachChild(std::move(background_sprite));
 
+	//air layer
+	SceneNode* air_layer = m_scene_layers[static_cast<int>(Layers::kAir)];
+
 	//Add player's 1 aircraft
-	std::unique_ptr<Aircraft> player1(new Aircraft(AircraftType::kPlayer1, m_textures, m_fonts));
+	std::unique_ptr<Aircraft> player1(new Aircraft(AircraftType::kPlayer1, m_textures, m_fonts, air_layer));
 	m_player_1 = player1.get();
 	m_player_1->setPosition(m_spawn_position);
 	
 	//Add player's 2 aircraft
 	sf::Vector2f spawnPosition2 = m_spawn_position + sf::Vector2f(100.f, 0.f);
-	std::unique_ptr<Aircraft> player2(new Aircraft(AircraftType::kPlayer2, m_textures, m_fonts));
+	std::unique_ptr<Aircraft> player2(new Aircraft(AircraftType::kPlayer2, m_textures, m_fonts, air_layer));
 	m_player_2 = player2.get();
 	m_player_2->setPosition(spawnPosition2);
 

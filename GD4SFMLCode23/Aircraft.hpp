@@ -11,7 +11,7 @@
 class Aircraft : public Entity
 {
 public:
-	Aircraft(AircraftType type, const TextureHolder& textures, const FontHolder& fonts);
+	Aircraft(AircraftType type, const TextureHolder& textures, const FontHolder& fonts, SceneNode* m_air_layer );
 	unsigned int GetCategory() const override;
 
 	void IncreaseFireRate();
@@ -39,6 +39,8 @@ private:
 	TextNode* m_missile_display;
 	float m_travelled_distance;
 	int m_directions_index;
+	
+	SceneNode* m_air_layer;
 
 	const TextureHolder& m_textures;
 };

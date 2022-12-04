@@ -11,6 +11,7 @@
 #include "Utility.hpp"
 #include <iostream>
 #include "ProjectileType.hpp"
+#include "Layers.hpp"
 
 namespace
 {
@@ -31,7 +32,7 @@ Texture ToTextureID(AircraftType type)
 	return Texture::kPlayer1;
 }
 
-Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontHolder& fonts) 
+Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontHolder& fonts, SceneNode* m_air_layer)
 	: Entity(Table[static_cast<int>(type)].m_hitpoints)
 	, m_type(type) 
 	, m_sprite(textures.Get(ToTextureID(type)))
@@ -43,6 +44,7 @@ Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontH
 	, m_travelled_distance(0.f)
 	, m_directions_index(0)
 	, m_textures(textures)
+	, m_air_layer(m_air_layer)
 {
 	sf::FloatRect bounds = m_sprite.getLocalBounds();
 	m_sprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
@@ -227,10 +229,31 @@ void Aircraft::Fire()
 		break;
 	}
 
-	std::unique_ptr<ProjectileType> bullet(new ProjectileType(bulletType, m_textures));
+	std::unique_ptr<ProjectileType> bullet(new ProjectileType(bulletType, m_textures, m_air_layer));
 	bullet->setPosition(getPosition());
 	bullet->setRotation(rotation);
-	bullet->SetVelocity(GetVelocity());
+	//set the velocity of the bullet depending on the rotation of the aircraft
+	switch ((int)rotation)
+	{
+		case 0:
+			bullet->SetVelocity(0, -1000);
+			break;
+		case 90:
+			bullet->SetVelocity(1000, 0);
+			break;
+		case 180:
+			bullet->SetVelocity(0, 1000);
+			break;
+		case 270:
+			bullet->SetVelocity(-1000, 0);
+			break;
+		default:
+			bullet->SetVelocity(0, -1000);
+			break;
+	}
+	
+	//add bullet to air layout
+	m_air_layer->AttachChild(std::move(bullet));
 	
 }
 

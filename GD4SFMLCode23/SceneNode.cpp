@@ -103,3 +103,12 @@ void SceneNode::OnCommand(const Command& command, sf::Time dt)
         child->OnCommand(command, dt);
     }
 }
+
+void SceneNode::DetectCollisionAndApplyDamage(sf::Vector2f position, float radius,float damage)
+{
+	//for all children check if this node is colliding with the position and radius
+	for (Ptr& child : m_children)
+	{
+		//check collision and do damage
+	}
+}
