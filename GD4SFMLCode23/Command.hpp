@@ -1,7 +1,9 @@
 #pragma once
 
+
 #include "ReceiverCategories.hpp"
-#include "Category.hpp"
+
+#include <SFML/System/Time.hpp>
 
 #include <functional>
 #include <cassert>
@@ -28,4 +30,3 @@ DerivedAction(Function fn)
 		fn(static_cast<GameObject&>(node), dt);
 	};
 }
-

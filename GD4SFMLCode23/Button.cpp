@@ -1,4 +1,3 @@
-#pragma once
 #include "Button.hpp"
 #include "ResourceIdentifiers.hpp"
 #include "ResourceHolder.hpp"

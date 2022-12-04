@@ -1,8 +1,9 @@
+// HUGO REY D00262075 : change aircraft type to fit the game and the 2 players
+
 #pragma once
 enum class AircraftType
 {
-	kEagle,
-	kRaptor,
-	kAvenger,
+	kPlayer1,
+	kPlayer2,
 	kAircraftCount
 };

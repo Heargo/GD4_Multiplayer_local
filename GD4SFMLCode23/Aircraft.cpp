@@ -1,3 +1,6 @@
+// HUGO REY D00262075 : fix the maximum size of aircraft to 100px*100px
+
+
 #include "Aircraft.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
@@ -16,14 +19,14 @@ Texture ToTextureID(AircraftType type)
 {
 	switch (type)
 	{
-	case AircraftType::kEagle:
-		return Texture::kEagle;
+	case AircraftType::kPlayer1:
+		return Texture::kPlayer1;
 		break;
-	case AircraftType::kRaptor:
-		return Texture::kRaptor;
+	case AircraftType::kPlayer2:
+		return Texture::kPlayer2;
 		break;
 	}
-	return Texture::kEagle;
+	return Texture::kPlayer1;
 }
 
 Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontHolder& fonts) 
@@ -41,6 +44,9 @@ Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontH
 	sf::FloatRect bounds = m_sprite.getLocalBounds();
 	m_sprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
 	std::string empty_string = "";
+
+	//fix max size of sprite to 100x100
+	m_sprite.setScale(100.f / bounds.width, 100.f / bounds.height);
 
 	std::unique_ptr<TextNode> health_display(new TextNode(fonts, empty_string));
 	m_health_display = health_display.get();
@@ -61,8 +67,12 @@ unsigned int Aircraft::GetCategory() const
 {
 	switch (m_type)
 	{
-	case AircraftType::kEagle:
+	case AircraftType::kPlayer1:
 		return static_cast<unsigned int>(ReceiverCategories::kPlayerAircraft);
+		
+	case AircraftType::kPlayer2:
+		return static_cast<unsigned int>(ReceiverCategories::kPlayerAircraft);
+		
 	default:
 		return static_cast<unsigned int>(ReceiverCategories::kEnemyAircraft);
 
@@ -138,6 +148,11 @@ void Aircraft::UpdateMovementPattern(sf::Time dt)
 float Aircraft::GetMaxSpeed() const
 {
 	return Table[static_cast<int>(m_type)].m_speed;
+}
+
+AircraftType Aircraft::GetType()
+{
+	return m_type;
 }
 
 void Aircraft::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const

@@ -1,9 +1,12 @@
+// HUGO REY D00262075 : add SpawnAsteroides function to spawn the asteroids in the limit of the world.
+
 #pragma once
 #include "ResourceHolder.hpp"
 #include "ResourceIdentifiers.hpp"
 #include "SceneNode.hpp"
 #include "SpriteNode.hpp"
 #include "Aircraft.hpp"
+#include "Asteroid.hpp"
 #include "Layers.hpp"
 
 #include <SFML/System/NonCopyable.hpp>
@@ -28,8 +31,10 @@ public:
 private:
 	void LoadTextures();
 	void BuildScene();
-	void AdaptPlayerPosition();
+	void AdaptPlayerPosition(Aircraft* player);
 	void AdaptPlayerVelocity();
+	void SpawnAsteroides(int nbAsteroides);
+	sf::Vector2f GetRandomPosition(int size,std::vector<sf::Vector2f> existingAsteroides,std::vector<int> existingAsteroidesSize);
 
 private:
 	sf::RenderWindow& m_window;
@@ -44,6 +49,7 @@ private:
 	sf::FloatRect m_world_bounds;
 	sf::Vector2f m_spawn_position;
 	float m_scrollspeed;
-	Aircraft* m_player_aircraft;
+	Aircraft* m_player_1;
+	Aircraft* m_player_2;
 };
 
