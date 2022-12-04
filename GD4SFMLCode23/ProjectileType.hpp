@@ -3,6 +3,7 @@
 #include "Entity.hpp"
 #include "ResourceIdentifiers.hpp"
 #include <SFML/Graphics/Sprite.hpp>
+#include "TextNode.hpp"
 /* old projectileType
 enum class ProjectileType
 {

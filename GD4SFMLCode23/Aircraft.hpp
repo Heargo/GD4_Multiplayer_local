@@ -19,6 +19,7 @@ public:
 	void UpdateTexts();
 	void UpdateMovementPattern(sf::Time dt);
 	float GetMaxSpeed() const;
+
 	AircraftType GetType();
 
 private:
@@ -36,4 +37,6 @@ private:
 	TextNode* m_missile_display;
 	float m_travelled_distance;
 	int m_directions_index;
+
+
 };

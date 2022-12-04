@@ -119,6 +119,56 @@ void Aircraft::UpdateTexts()
 	}
 }
 
+/* tried to add shooting to Aircraft class
+void::Aircraft(Type type, const TextureHolder& textures)
+{
+	m_fire_command.category = Category::SceneAirLayer;
+	m_fire_command.action = [this, &textures](SceneNode& node, sf::Time)
+	{
+		createBullets(node, textures);
+	};
+	m_missile_command.category = Category::SceneAirLayer;
+	m_missile_command.action = [this, &textures](SceneNode& node, sf::Time)
+	{
+		create_projectile(node, Projectile::Missile, 0.f, 0.5f, textures);
+	};
+}
+
+void Aircarft::createBullets(SceneNode& node, const TextureHolder& textures) const
+{
+	Projectile::Type type = isAllied() ? Projectile::AlliedBullet : Projectile::EnemyBullet;
+	switch (mSpreadLevel)
+	{
+	case 1:
+		createProjectile(node, type, 0.0f, 0.5f, textures);
+		break;
+	case 2:
+		createProjectile(node, type, -0.33f, 0.33f, textures);
+		createProjectile(node, type, 0.33f, 0.33f, textures);
+		break;
+	case 3:
+		createProjectile(node, type, -0.5f, 0.33f, textures);
+		createProjectile(node, type, 0.0f, 0.5f, textures);
+		createProjectile(node, type, 0.5f, 0.33f, textures);
+		break;
+	}
+}
+
+void Aircraft::createProjectile(SceneNode& node, Projectile::Type type, float xOffset, float yOffset, const TextureHolder& textures) const
+{
+	std::unique_ptr<Projectile> projectile(new Projectile(type, textures));
+	sf::Vector2f offset(xOffset * mSprite.getGlobalBounds().width, yOffset * mSprite.getGlobalBounds().height);
+	sf::Vector2f velocity(0, projectile->getMaxSpeed());
+	float sign = isAllied() ? -1.f : +1.f;
+	projectile->setPosition(getWorldPosition() + offset * sign);
+	projectile->setVelocity(velocity * sign);
+	node.attachChild(std::move(projectile));
+}
+*/
+
+
+
+
 void Aircraft::UpdateMovementPattern(sf::Time dt)
 {
 	//Enemy AI
