@@ -8,6 +8,7 @@
 Entity::Entity(int hitpoints)
     : m_hitpoints(hitpoints)
 {
+
 }
 
 void Entity::SetVelocity(sf::Vector2f velocity)

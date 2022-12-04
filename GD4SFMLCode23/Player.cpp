@@ -36,12 +36,14 @@ Player::Player()
     m_key_binding[sf::Keyboard::Right] = Action::kMoveRight1;
     m_key_binding[sf::Keyboard::Up] = Action::kMoveUp1;
     m_key_binding[sf::Keyboard::Down] = Action::kMoveDown1;
+    m_key_binding[sf::Keyboard::Q] = Action::kShoot1;
 
 	//player 2
     m_key_binding[sf::Keyboard::A] = Action::kMoveLeft2;
     m_key_binding[sf::Keyboard::D] = Action::kMoveRight2;
     m_key_binding[sf::Keyboard::W] = Action::kMoveUp2;
     m_key_binding[sf::Keyboard::S] = Action::kMoveDown2;
+    m_key_binding[sf::Keyboard::M] = Action::kShoot2;
 
     //Set initial action bindings
     InitializeActions();

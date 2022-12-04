@@ -23,6 +23,7 @@ std::vector<AircraftData> InitializeAircraftData()
     return data;
 }
 
+//Initializes the Projectile Data, such as damage, speed, and texture
 std::vector<ProjectileData> InitializeProjectileData()
 {
     std::vector<ProjectileData> data(static_cast<int>(ProjectileType::kProjectileCount));

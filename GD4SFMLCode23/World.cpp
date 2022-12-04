@@ -79,6 +79,9 @@ void World::LoadTextures()
 	//load asteroide texture
 	m_textures.Load(Texture::kAsteroid, "Media/Textures/asteroid.png");
 
+	//loads bullet texture
+	m_textures.Load(Texture::kBullet, "Media/Textures/Bullet.png");
+
 	
 	
 }
