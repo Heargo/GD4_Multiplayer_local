@@ -114,15 +114,22 @@ void Player::InitializeActions()
 {
     //TODO Normalize to avoid faster movement along diagonals
     const float kPlayerAcceleration = 5.f;
+
+    const float kBulletAcceleration = 5.f;
+
     m_action_binding[Action::kMoveLeft1].action = DerivedAction<Aircraft>(AircraftMover(-kPlayerAcceleration, 0.f, AircraftType::kPlayer1));
     m_action_binding[Action::kMoveRight1].action = DerivedAction<Aircraft>(AircraftMover(kPlayerAcceleration, 0.f, AircraftType::kPlayer1));
     m_action_binding[Action::kMoveUp1].action = DerivedAction<Aircraft>(AircraftMover(0.f, -kPlayerAcceleration, AircraftType::kPlayer1));
     m_action_binding[Action::kMoveDown1].action = DerivedAction<Aircraft>(AircraftMover(0.f, kPlayerAcceleration, AircraftType::kPlayer1));
+    //Change Shoot action - aircraft mover when BulletShooter is successfully implemented
+    m_action_binding[Action::kShoot1].action = DerivedAction<Aircraft>(AircraftMover(0.f, kBulletAcceleration, AircraftType::kPlayer1));
 
     m_action_binding[Action::kMoveLeft2].action = DerivedAction<Aircraft>(AircraftMover(-kPlayerAcceleration, 0.f, AircraftType::kPlayer2));
     m_action_binding[Action::kMoveRight2].action = DerivedAction<Aircraft>(AircraftMover(kPlayerAcceleration, 0.f, AircraftType::kPlayer2));
     m_action_binding[Action::kMoveUp2].action = DerivedAction<Aircraft>(AircraftMover(0.f, -kPlayerAcceleration, AircraftType::kPlayer2));
     m_action_binding[Action::kMoveDown2].action = DerivedAction<Aircraft>(AircraftMover(0.f, kPlayerAcceleration, AircraftType::kPlayer2));
+    //Change Shoot action - aircraft mover when BulletShooter is successfully implemented
+    m_action_binding[Action::kShoot2].action = DerivedAction<Aircraft>(AircraftMover(0.f,kBulletAcceleration, AircraftType::kPlayer2));
 }
 
 bool Player::IsRealtimeAction(Action action)
@@ -137,6 +144,8 @@ bool Player::IsRealtimeAction(Action action)
     case Action::kMoveUp2:
     case Action::kMoveLeft2:
     case Action::kMoveRight2:
+    case Action::kShoot1:
+    case Action::kShoot2:
         return true;
     default:
         return false;
