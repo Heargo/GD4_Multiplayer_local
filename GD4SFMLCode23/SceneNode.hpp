@@ -31,6 +31,7 @@ public:
 	sf::Transform GetWorldTransform() const;
 
 	void OnCommand(const Command& command, sf::Time dt);
+	float Distance(SceneNode& node, SceneNode& node2);
 
 	void DetectCollisionAndApplyDamage(sf::Vector2f position, float radius, float damage);
 

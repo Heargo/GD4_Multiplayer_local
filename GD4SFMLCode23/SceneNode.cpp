@@ -104,6 +104,12 @@ void SceneNode::OnCommand(const Command& command, sf::Time dt)
     }
 }
 
+float SceneNode::Distance(SceneNode& node, SceneNode& node2)
+{
+	float distance = sqrt(pow(node.GetWorldPosition().x - node2.GetWorldPosition().x, 2) + pow(node.GetWorldPosition().y - node2.GetWorldPosition().y, 2));
+	return distance;
+}
+
 void SceneNode::DetectCollisionAndApplyDamage(sf::Vector2f position, float radius,float damage)
 {
 	//for all children check if this node is colliding with the position and radius
