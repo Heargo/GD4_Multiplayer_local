@@ -7,6 +7,7 @@
 #include "ResourceIdentifiers.hpp"
 #include <SFML/Graphics/Sprite.hpp>
 #include "TextNode.hpp"
+#include "ProjectileCustom.hpp"
 
 class Aircraft : public Entity
 {
@@ -21,7 +22,9 @@ public:
 	void UpdateMovementPattern(sf::Time dt);
 	float GetMaxSpeed() const;
 	void Fire();
-
+	void CheckFireCountdown(sf::Time dt, CommandQueue& commands);
+	void CreateBullet(SceneNode& node, const TextureHolder& textures) const;
+	void CreateProjectile(SceneNode& node, ProjectileCustom::Type type, float xOffset, float yOffset, const TextureHolder& textures) const;
 	AircraftType GetType();
 
 private:
@@ -39,6 +42,10 @@ private:
 	TextNode* m_missile_display;
 	float m_travelled_distance;
 	int m_directions_index;
+
+	bool m_is_firing;
+	sf::Time m_fire_coutndown;
+	Command m_fire_command;
 	
 	SceneNode* m_air_layer;
 

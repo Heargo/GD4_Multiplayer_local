@@ -157,6 +157,9 @@ bool Player::IsRealtimeAction(Action action)
     case Action::kMoveUp2:
     case Action::kMoveLeft2:
     case Action::kMoveRight2:
+
+    case Action::kShoot1:
+	case Action::kShoot2:
         return true;
     default:
         return false;

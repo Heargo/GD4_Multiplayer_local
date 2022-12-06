@@ -14,11 +14,10 @@
 #include <iostream>
 
 
-ProjectileCustom::ProjectileCustom(ProjectileCustom::Type type, const TextureHolder& texture, SceneNode* air_layer)
+ProjectileCustom::ProjectileCustom(ProjectileCustom::Type type, const TextureHolder& texture)
 	:Entity(1)
 	,m_type(type)
 	,m_sprite(texture.Get(Texture::kBullet))
-	, m_air_layer(air_layer)
 {
 	//log to console 
 	std::cout << "Projectile created." << std::endl;
@@ -43,7 +42,7 @@ void ProjectileCustom::UpdateCurrent(sf::Time dt, CommandQueue& commands)
 {
 	//check if collide with an entity in the air layer
 	//if so, destroy the projectile
-	m_air_layer->DetectCollisionAndApplyDamage(getPosition(), 1, getDamage());
+	//m_air_layer->DetectCollisionAndApplyDamage(getPosition(), 1, getDamage());
 	
 
 	Entity::UpdateCurrent(dt, commands);

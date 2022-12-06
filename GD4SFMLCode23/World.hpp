@@ -34,6 +34,7 @@ private:
 	void AdaptPlayerPosition(Aircraft* player);
 	void AdaptPlayerVelocity();
 	void SpawnAsteroides(int nbAsteroides);
+	void HandleCollisions();
 	sf::Vector2f GetRandomPosition(int size,std::vector<sf::Vector2f> existingAsteroides,std::vector<int> existingAsteroidesSize);
 
 private:
@@ -44,6 +45,9 @@ private:
 	SceneNode m_scenegraph;
 	std::array<SceneNode*, static_cast<int>(Layers::kLayerCount)> m_scene_layers;
 
+	//list of Entity
+	std::vector<Entity*> m_active_entities;
+	
 	CommandQueue m_command_queue;
 
 	sf::FloatRect m_world_bounds;

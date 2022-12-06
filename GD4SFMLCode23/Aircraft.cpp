@@ -45,7 +45,16 @@ Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontH
 	, m_directions_index(0)
 	, m_textures(textures)
 	, m_air_layer(m_air_layer)
+	, m_is_firing(false)
+	, m_fire_coutndown(sf::seconds(1.f / m_fire_rate))
+	, m_fire_command()
 {
+	m_fire_command.category = static_cast<int>(ReceiverCategories::kScene);
+	m_fire_command.action = [this, &textures](SceneNode& node, sf::Time)
+	{
+		CreateBullet(node, textures);
+	};
+
 	sf::FloatRect bounds = m_sprite.getLocalBounds();
 	m_sprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
 	std::string empty_string = "";
@@ -207,53 +216,58 @@ float Aircraft::GetMaxSpeed() const
 
 void Aircraft::Fire()
 {
-	//print to console to check if firing
-	std::cout << "Firing" << std::endl;
+	////print to console to check if firing
+	//std::cout << "Firing" << std::endl;
 
-	//get the direction of the aircraft
-	float rotation = getRotation();
-	
-	//create a bullet
-	ProjectileCustom::Type bulletType;
-	switch (m_type)
-	{
-	case AircraftType::kPlayer1:
-		bulletType = ProjectileCustom::Type::kPlayer1Bullet;
-		break;
-	case AircraftType::kPlayer2:
-		bulletType = ProjectileCustom::Type::kPlayer2Bullet;
-		break;
+	////get the direction of the aircraft
+	//float rotation = getRotation();
+	//
+	////create a bullet
+	//ProjectileCustom::Type bulletType;
+	//switch (m_type)
+	//{
+	//case AircraftType::kPlayer1:
+	//	bulletType = ProjectileCustom::Type::kPlayer1Bullet;
+	//	break;
+	//case AircraftType::kPlayer2:
+	//	bulletType = ProjectileCustom::Type::kPlayer2Bullet;
+	//	break;
 
-	default:
-		bulletType = ProjectileCustom::Type::kPlayer1Bullet;
-		break;
-	}
+	//default:
+	//	bulletType = ProjectileCustom::Type::kPlayer1Bullet;
+	//	break;
+	//}
 
-	std::unique_ptr<ProjectileCustom> bullet(new ProjectileCustom(bulletType, m_textures, m_air_layer));
-	bullet->setPosition(getPosition());
-	bullet->setRotation(rotation);
-	//set the velocity of the bullet depending on the rotation of the aircraft
-	switch ((int)rotation)
-	{
-		case 0:
-			bullet->SetVelocity(0, -1000);
-			break;
-		case 90:
-			bullet->SetVelocity(1000, 0);
-			break;
-		case 180:
-			bullet->SetVelocity(0, 1000);
-			break;
-		case 270:
-			bullet->SetVelocity(-1000, 0);
-			break;
-		default:
-			bullet->SetVelocity(0, -1000);
-			break;
-	}
-	
-	//add bullet to air layout
-	m_air_layer->AttachChild(std::move(bullet));
+	//std::unique_ptr<ProjectileCustom> bullet(new ProjectileCustom(bulletType, m_textures, m_air_layer));
+	//bullet->setPosition(getPosition());
+	//bullet->setRotation(rotation);
+	////set the velocity of the bullet depending on the rotation of the aircraft
+	//switch ((int)rotation)
+	//{
+	//	case 0:
+	//		bullet->SetVelocity(0, -1000);
+	//		break;
+	//	case 90:
+	//		bullet->SetVelocity(1000, 0);
+	//		break;
+	//	case 180:
+	//		bullet->SetVelocity(0, 1000);
+	//		break;
+	//	case 270:
+	//		bullet->SetVelocity(-1000, 0);
+	//		break;
+	//	default:
+	//		bullet->SetVelocity(0, -1000);
+	//		break;
+	//}
+	//
+	////add bullet to air layout
+	//m_air_layer->AttachChild(std::move(bullet));
+
+	/*if (m_fire_coutndown != sf::Time::Zero)
+	{*/
+	m_is_firing = true;
+	//}
 	
 }
 
@@ -271,4 +285,57 @@ void Aircraft::UpdateCurrent(sf::Time dt, CommandQueue& commands)
 {
 	UpdateTexts();
 	Entity::UpdateCurrent(dt, commands);
+}
+
+void Aircraft::CheckFireCountdown(sf::Time dt,CommandQueue& commands)
+{
+	if (m_is_firing && m_fire_coutndown <= sf::Time::Zero)
+	{	
+		commands.Push(m_fire_command);
+		m_is_firing = false;
+		m_fire_coutndown = sf::seconds(1.f / m_fire_rate);
+	}
+	else if (m_fire_coutndown > sf::Time::Zero)
+	{	
+		m_fire_coutndown -= dt;
+		m_is_firing = false;
+	}
+	
+}
+
+void Aircraft::CreateBullet(SceneNode& node, const TextureHolder& textures) const
+{
+	ProjectileCustom::Type type = m_type==AircraftType::kPlayer1 ? ProjectileCustom::Type::kPlayer1Bullet : ProjectileCustom::Type::kPlayer2Bullet;
+
+	CreateProjectile(node, type, 0.0f, 0.5f, textures);
+		
+}
+
+void Aircraft::CreateProjectile(SceneNode& node, ProjectileCustom::Type type,
+	float xOffset, float yOffset, const TextureHolder& textures) const
+{
+	std::unique_ptr<ProjectileCustom> projectile(new ProjectileCustom(type, textures));
+	sf::Vector2f offset(xOffset * m_sprite.getGlobalBounds().width, yOffset * m_sprite.getGlobalBounds().height);
+	projectile->setPosition(getPosition() + offset);
+	projectile->setRotation(getRotation());
+	float rotation = getRotation();
+	switch ((int)rotation)
+	{
+		case 0:
+			projectile->SetVelocity(0, -1000);
+			break;
+		case 90:
+			projectile->SetVelocity(1000, 0);
+			break;
+		case 180:
+			projectile->SetVelocity(0, 1000);
+			break;
+		case 270:
+			projectile->SetVelocity(-1000, 0);
+			break;
+		default:
+			projectile->SetVelocity(0, -1000);
+			break;
+	}
+	node.AttachChild(std::move(projectile));
 }

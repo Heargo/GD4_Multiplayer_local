@@ -27,7 +27,7 @@ public:
 	};
 
 public:
-	ProjectileCustom(ProjectileCustom::Type type, const TextureHolder& texture, SceneNode* air_layer);
+	ProjectileCustom(ProjectileCustom::Type type, const TextureHolder& texture);
 	//void guideTowards(sf::Vector2f position);
 	//bool isGuided() const;
 	virtual unsigned int getCategory() const;
@@ -41,6 +41,4 @@ private:
 private:
 	Type m_type;
 	sf::Sprite m_sprite;
-	SceneNode* m_air_layer;
-	//sf::Vector2f m_targetDirection;
 };

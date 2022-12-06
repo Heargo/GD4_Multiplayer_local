@@ -225,6 +225,20 @@ void World::SpawnAsteroides(int nbAsteroides)
 	}
 }
 
+void World::HandleCollisions()
+{
+	Command entityCollecor;
+	entityCollecor.category = static_cast<int>(ReceiverCategories::kPlayerAircraft);// | ReceiverCategories::kAsteroid;
+	entityCollecor.action = DerivedAction<Entity>([this](Entity& e, sf::Time dt)
+		{
+			//check collision with other entities
+			if (!e.IsDestroyed())
+			{
+				m_active_entities.emplace_back(&e);
+			}
+		});
+}
+
 sf::Vector2f World::GetRandomPosition(int size,std::vector<sf::Vector2f> existingAsteroides, std::vector<int> existingAsteroidesSize)
 {
 	
