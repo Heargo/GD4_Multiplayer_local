@@ -5,8 +5,6 @@
 #include "Player.hpp"
 #include "CommandQueue.hpp"
 #include "Aircraft.hpp"
-#include "ProjectileType.hpp"
-
 #include <map>
 #include <string>
 #include <algorithm>

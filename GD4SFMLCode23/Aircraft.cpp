@@ -10,7 +10,7 @@
 #include "DataTables.hpp"
 #include "Utility.hpp"
 #include <iostream>
-#include "ProjectileType.hpp"
+#include "ProjectileCustom.hpp"
 #include "Layers.hpp"
 
 namespace
@@ -214,22 +214,22 @@ void Aircraft::Fire()
 	float rotation = getRotation();
 	
 	//create a bullet
-	ProjectileType::Type bulletType;
+	ProjectileCustom::Type bulletType;
 	switch (m_type)
 	{
 	case AircraftType::kPlayer1:
-		bulletType = ProjectileType::Type::kPlayer1Bullet;
+		bulletType = ProjectileCustom::Type::kPlayer1Bullet;
 		break;
 	case AircraftType::kPlayer2:
-		bulletType = ProjectileType::Type::kPlayer2Bullet;
+		bulletType = ProjectileCustom::Type::kPlayer2Bullet;
 		break;
 
 	default:
-		bulletType = ProjectileType::Type::kPlayer1Bullet;
+		bulletType = ProjectileCustom::Type::kPlayer1Bullet;
 		break;
 	}
 
-	std::unique_ptr<ProjectileType> bullet(new ProjectileType(bulletType, m_textures, m_air_layer));
+	std::unique_ptr<ProjectileCustom> bullet(new ProjectileCustom(bulletType, m_textures, m_air_layer));
 	bullet->setPosition(getPosition());
 	bullet->setRotation(rotation);
 	//set the velocity of the bullet depending on the rotation of the aircraft

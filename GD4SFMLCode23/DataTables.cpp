@@ -4,7 +4,7 @@
 #include "AircraftType.hpp"
 #include "Aircraft.hpp"
 #include "PickupType.hpp"
-#include "ProjectileType.hpp"
+//#include "ProjectileType.hpp"
 
 std::vector<AircraftData> InitializeAircraftData()
 {

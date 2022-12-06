@@ -1,7 +1,7 @@
 //HUGO REY D00262075 : add functions from .hpp
 
 #pragma once
-#include "ProjectileType.hpp"
+#include "ProjectileCustom.hpp"
 #include "Projectile.hpp"
 #include "Entity.hpp"
 #include "ResourceIdentifiers.hpp"
@@ -14,7 +14,7 @@
 #include <iostream>
 
 
-ProjectileType::ProjectileType(ProjectileType::Type type, const TextureHolder& texture, SceneNode* air_layer)
+ProjectileCustom::ProjectileCustom(ProjectileCustom::Type type, const TextureHolder& texture, SceneNode* air_layer)
 	:Entity(1)
 	,m_type(type)
 	,m_sprite(texture.Get(Texture::kBullet))
@@ -24,22 +24,22 @@ ProjectileType::ProjectileType(ProjectileType::Type type, const TextureHolder& t
 	std::cout << "Projectile created." << std::endl;
 }
 
-unsigned int ProjectileType::getCategory() const
+unsigned int ProjectileCustom::getCategory() const
 {
 	return 0;
 }
 
-float ProjectileType::getMaxSpeed() const
+float ProjectileCustom::getMaxSpeed() const
 {
 	return 0.0f;
 }
 
-int ProjectileType::getDamage() const
+int ProjectileCustom::getDamage() const
 {
 	return 1;
 }
 
-void ProjectileType::UpdateCurrent(sf::Time dt, CommandQueue& commands)
+void ProjectileCustom::UpdateCurrent(sf::Time dt, CommandQueue& commands)
 {
 	//check if collide with an entity in the air layer
 	//if so, destroy the projectile
@@ -49,7 +49,7 @@ void ProjectileType::UpdateCurrent(sf::Time dt, CommandQueue& commands)
 	Entity::UpdateCurrent(dt, commands);
 }
 
-void ProjectileType::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
+void ProjectileCustom::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(m_sprite, states);
 }

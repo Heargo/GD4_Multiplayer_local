@@ -16,7 +16,7 @@ enum class ProjectileType
 }; */
 
 
-class ProjectileType : public Entity
+class ProjectileCustom : public Entity
 {
 public:
 	enum Type
@@ -27,7 +27,7 @@ public:
 	};
 
 public:
-	ProjectileType(ProjectileType::Type type, const TextureHolder& texture, SceneNode* air_layer);
+	ProjectileCustom(ProjectileCustom::Type type, const TextureHolder& texture, SceneNode* air_layer);
 	//void guideTowards(sf::Vector2f position);
 	//bool isGuided() const;
 	virtual unsigned int getCategory() const;
