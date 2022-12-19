@@ -89,7 +89,7 @@ unsigned int Aircraft::GetCategory() const
 		return static_cast<unsigned int>(ReceiverCategories::kPlayerAircraft);
 		
 	default:
-		return static_cast<unsigned int>(ReceiverCategories::kEnemyAircraft);
+		return static_cast<unsigned int>(ReceiverCategories::kPlayer2Aircraft);
 
 	}
 }

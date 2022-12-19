@@ -36,10 +36,10 @@ unsigned int Projectile::GetCategory() const
 {
 	if (m_type == ProjectileCustom::kPlayer2Bullet)
 	{
-		return static_cast<int>(ReceiverCategories::kEnemyProjectile);
+		return static_cast<int>(ReceiverCategories::kPlayer2Projectile);
 	}
 	else
-		return static_cast<int>(ReceiverCategories::kAlliedProjectile);
+		return static_cast<int>(ReceiverCategories::kPlayer1Projectile);
 }
 
 sf::FloatRect Projectile::GetBoundingRect() const
