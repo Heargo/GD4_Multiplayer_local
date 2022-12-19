@@ -21,12 +21,14 @@ public:
 	void UpdateMovementPattern(sf::Time dt);
 	float GetMaxSpeed() const;
 	void Fire();
+	void ApplyDamage(float damage);
 
 	AircraftType GetType();
 
 private:
 	virtual void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 	virtual void UpdateCurrent(sf::Time dt, CommandQueue& commands) override;
+	sf::Vector2f BulletPosition();
 	
 private:
 	AircraftType m_type;

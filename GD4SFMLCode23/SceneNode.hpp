@@ -48,6 +48,7 @@ private:
 
 private:
 	std::vector<Ptr> m_children;
+	std::vector<Ptr> m_children_to_remove;
 	SceneNode* m_parent;
 
 };

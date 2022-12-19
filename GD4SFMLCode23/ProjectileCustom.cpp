@@ -1,4 +1,5 @@
-//HUGO REY D00262075 : add functions from .hpp
+//HUGO REY D00262075 : add functions from .hpp 
+//call the update on the air layer for collision and damage
 
 #pragma once
 #include "ProjectileCustom.hpp"
@@ -24,9 +25,10 @@ ProjectileCustom::ProjectileCustom(ProjectileCustom::Type type, const TextureHol
 	std::cout << "Projectile created." << std::endl;
 }
 
-unsigned int ProjectileCustom::getCategory() const
+
+unsigned int ProjectileCustom::GetCategory() const
 {
-	return 0;
+	return static_cast<unsigned int>(ReceiverCategories::kProjectile);
 }
 
 float ProjectileCustom::getMaxSpeed() const
@@ -43,7 +45,7 @@ void ProjectileCustom::UpdateCurrent(sf::Time dt, CommandQueue& commands)
 {
 	//check if collide with an entity in the air layer
 	//if so, destroy the projectile
-	m_air_layer->DetectCollisionAndApplyDamage(getPosition(), 1, getDamage());
+	m_air_layer->DetectCollisionAndApplyDamage(getPosition(), 10, getDamage());
 	
 
 	Entity::UpdateCurrent(dt, commands);
@@ -53,3 +55,4 @@ void ProjectileCustom::DrawCurrent(sf::RenderTarget& target, sf::RenderStates st
 {
 	target.draw(m_sprite, states);
 }
+

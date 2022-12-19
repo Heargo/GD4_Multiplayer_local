@@ -30,10 +30,11 @@ public:
 	ProjectileCustom(ProjectileCustom::Type type, const TextureHolder& texture, SceneNode* air_layer);
 	//void guideTowards(sf::Vector2f position);
 	//bool isGuided() const;
-	virtual unsigned int getCategory() const;
+	virtual unsigned int GetCategory() const;
 	//virtual sf::FloatRect getBoundingRect const;
 	float getMaxSpeed() const;
 	int getDamage() const;
+
 
 private:
 	virtual void UpdateCurrent(sf::Time dt, CommandQueue& commands);

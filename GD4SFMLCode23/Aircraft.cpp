@@ -1,5 +1,6 @@
 // HUGO REY D00262075 : fix the maximum size of aircraft to 100px*100px
 // Add Fire() to shoot projectiles.
+// Add BulletPosition() to know where to spawn the projectile. It's adding an offset to the bullet to avoid collision at spawn.
 
 #include "Aircraft.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -82,6 +83,7 @@ unsigned int Aircraft::GetCategory() const
 		return static_cast<unsigned int>(ReceiverCategories::kEnemyAircraft);
 
 	}
+	//return static_cast<unsigned int>(ReceiverCategories::kDamagable);
 }
 
 void Aircraft::IncreaseFireRate()
@@ -230,7 +232,7 @@ void Aircraft::Fire()
 	}
 
 	std::unique_ptr<ProjectileCustom> bullet(new ProjectileCustom(bulletType, m_textures, m_air_layer));
-	bullet->setPosition(getPosition());
+	bullet->setPosition(BulletPosition());
 	bullet->setRotation(rotation);
 	//set the velocity of the bullet depending on the rotation of the aircraft
 	switch ((int)rotation)
@@ -256,6 +258,40 @@ void Aircraft::Fire()
 	m_air_layer->AttachChild(std::move(bullet));
 	
 }
+
+sf::Vector2f Aircraft::BulletPosition()
+{
+	//put the bullet 10px in front of the aircraft
+	float rotation = getRotation();
+	int offset = 50;
+	sf::Vector2f pos = getPosition();
+	switch ((int)rotation)
+	{
+	case 0:
+		pos.y -= offset;
+		break;
+	case 90:
+		pos.x += offset;
+		break;
+	case 180:
+		pos.y += offset;
+		break;
+	case 270:
+		pos.x -= offset;
+		break;
+	default:
+		pos.y -= offset;
+		break;
+	}
+
+	return pos;
+}
+
+void Aircraft::ApplyDamage(float damage)
+{
+	std::cout << "I took damage" << std::endl;
+}
+
 
 AircraftType Aircraft::GetType()
 {

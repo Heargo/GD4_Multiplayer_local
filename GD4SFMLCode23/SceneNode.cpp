@@ -1,10 +1,15 @@
+//HUGO REY D00262075 : Adding the DetectCollisionAndApplyDamage function to the SceneNode class
+//this function will check if the projectile is colliding with an entity in the air layer
+//The projectile will be destroyed if it is colliding with an entity (see comment in the function)
+
 #include "SceneNode.hpp"
 #include "ReceiverCategories.hpp"
 #include "Command.hpp"
 #include <cassert>
 #include <memory>
-
-SceneNode::SceneNode():m_children(), m_parent(nullptr)
+#include "Aircraft.hpp"
+#include <iostream>
+SceneNode::SceneNode():m_children(), m_children_to_remove(), m_parent(nullptr)
 {
 }
 
@@ -106,9 +111,43 @@ void SceneNode::OnCommand(const Command& command, sf::Time dt)
 
 void SceneNode::DetectCollisionAndApplyDamage(sf::Vector2f position, float radius,float damage)
 {
+    //std::vector<Ptr&> childrenToRemove={};
+	
 	//for all children check if this node is colliding with the position and radius
 	for (Ptr& child : m_children)
 	{
-		//check collision and do damage
+		//skip if null
+		if (child == nullptr)
+			continue;
+
+        // skip if not aircraft
+        if (child->GetCategory() != static_cast<unsigned int>(ReceiverCategories::kPlayerAircraft))
+            continue;
+
+        Aircraft* aircraft = static_cast<Aircraft*>(child.get());
+
+        //if there is a ProjectileCustom then apply damage to child 
+		for (Ptr& child2 : m_children)
+		{
+            if (child2->GetCategory() == static_cast<unsigned int>(ReceiverCategories::kProjectile))
+            {
+				//calculate distance between child2 and aircraft
+				float distance = sqrt(pow((child2->GetWorldPosition().x - aircraft->GetWorldPosition().x), 2) + pow((child2->GetWorldPosition().y - aircraft->GetWorldPosition().y), 2));
+                if (distance <= radius)
+                {
+                    aircraft->ApplyDamage(damage);
+                    //I know this is not the best way to do this but I tried to use a list of ptr to remove but it did not work
+                    DetachChild(*child2);
+                }
+                
+            }
+		}
+		
 	}
+	
+    //remove all projectiles from the children list
+   /* for (Ptr& child : m_children_to_remove)
+    {
+        DetachChild(*child);
+    }*/
 }
