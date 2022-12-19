@@ -1,8 +1,4 @@
 #pragma once
-
-#ifndef BOOK_SCENENODE_HPP
-#define BOOK_SCENENODE_HPP
-
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/Transformable.hpp>
@@ -31,6 +27,7 @@ public:
 	sf::Transform GetWorldTransform() const;
 
 	void OnCommand(const Command& command, sf::Time dt);
+	virtual sf::FloatRect GetBoundingRect() const;
 	float Distance(SceneNode& node, SceneNode& node2);
 
 	void DetectCollisionAndApplyDamage(sf::Vector2f position, float radius, float damage);
@@ -52,5 +49,5 @@ private:
 	SceneNode* m_parent;
 
 };
-#endif // BOOK_SCENENODE_HPP
+float Distance(const SceneNode& lhs, const SceneNode& rhs);
 

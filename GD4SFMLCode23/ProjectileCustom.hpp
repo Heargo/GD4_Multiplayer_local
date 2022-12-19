@@ -6,8 +6,8 @@
 #include "ResourceIdentifiers.hpp"
 #include <SFML/Graphics/Sprite.hpp>
 #include "TextNode.hpp"
-/* old projectileType
-enum class ProjectileType
+/* old ProjectileType
+enum class ProjectileCustom
 {
 	kAlliedBullet,
 	kEnemyBullet,

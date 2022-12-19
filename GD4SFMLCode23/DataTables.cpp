@@ -4,7 +4,7 @@
 #include "AircraftType.hpp"
 #include "Aircraft.hpp"
 #include "PickupType.hpp"
-//#include "ProjectileType.hpp"
+//#include "ProjectileCustom.hpp"
 
 std::vector<AircraftData> InitializeAircraftData()
 {
@@ -24,23 +24,23 @@ std::vector<AircraftData> InitializeAircraftData()
 }
 
 //Initializes the Projectile Data, such as damage, speed, and texture
-//std::vector<ProjectileData> InitializeProjectileData()
-//{
-//    std::vector<ProjectileData> data(static_cast<int>(ProjectileType::kProjectileCount));
-//
-//    data[static_cast<int>(ProjectileType::kAlliedBullet)].m_damage = 10;
-//    data[static_cast<int>(ProjectileType::kAlliedBullet)].m_speed = 300;
-//    data[static_cast<int>(ProjectileType::kAlliedBullet)].m_texture = Texture::kBullet;
-//
-//    data[static_cast<int>(ProjectileType::kEnemyBullet)].m_damage = 10;
-//    data[static_cast<int>(ProjectileType::kEnemyBullet)].m_speed = 300;
-//    data[static_cast<int>(ProjectileType::kEnemyBullet)].m_texture = Texture::kBullet;
-//
-//    data[static_cast<int>(ProjectileType::kMissile)].m_damage = 200;
-//    data[static_cast<int>(ProjectileType::kAlliedBullet)].m_speed = 350;
-//    data[static_cast<int>(ProjectileType::kMissile)].m_texture = Texture::kMissile;
-//    return data;
-//}
+std::vector<ProjectileData> InitializeProjectileData()
+{
+    std::vector<ProjectileData> data(static_cast<int>(ProjectileCustom::kProjectileCount));
+
+    data[static_cast<int>(ProjectileCustom::kPlayer1Bullet)].m_damage = 10;
+    data[static_cast<int>(ProjectileCustom::kPlayer1Bullet)].m_speed = 300;
+    data[static_cast<int>(ProjectileCustom::kPlayer1Bullet)].m_texture = Texture::kBullet;
+
+    data[static_cast<int>(ProjectileCustom::kPlayer2Bullet)].m_damage = 10;
+    data[static_cast<int>(ProjectileCustom::kPlayer2Bullet)].m_speed = 300;
+    data[static_cast<int>(ProjectileCustom::kPlayer2Bullet)].m_texture = Texture::kBullet;
+
+    //data[static_cast<int>(ProjectileCustom::kMissile)].m_damage = 200;
+    data[static_cast<int>(ProjectileCustom::kPlayer1Bullet)].m_speed = 350;
+    //data[static_cast<int>(ProjectileCustom::kMissile)].m_texture = Texture::kMissile;
+    return data;
+}
 
 std::vector<PickupData> InitializePickupData()
 {

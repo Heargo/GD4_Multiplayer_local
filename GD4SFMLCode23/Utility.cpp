@@ -132,3 +132,21 @@ double Utility::ToRadians(int degrees)
 {
 	return (degrees*M_PI)/180;
 }
+
+
+double Utility::ToDegrees(double angle)
+{
+	return angle * (180 / M_PI);
+}
+
+
+sf::Vector2f Utility::UnitVector(sf::Vector2f vector)
+{
+	assert(vector != sf::Vector2f(0.f, 0.f));
+	return vector / Length(vector);
+}
+
+float Utility::Length(sf::Vector2f vector)
+{
+	return sqrtf(powf(vector.x, 2) + powf(vector.y, 2));
+}

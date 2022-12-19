@@ -5,7 +5,15 @@ enum class ReceiverCategories
 	kNone = 0,
 	kScene = 1 << 0,
 	kPlayerAircraft = 1 << 1,
-	kEnemyAircraft = 1 << 2
+	kEnemyAircraft = 1 << 2,
+	kPickup = 1 << 3,
+	kAlliedProjectile = 1 << 4,
+	kEnemyProjectile = 1 << 5,
+
+	kProjectile = kAlliedProjectile | kEnemyProjectile,
+
+
+	kAircraft = kPlayerAircraft | kPlayerAircraft | kEnemyAircraft,
 };
 
 //A message that would be sent to all aircraft

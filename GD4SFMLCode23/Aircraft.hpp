@@ -8,6 +8,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include "TextNode.hpp"
 #include "ProjectileCustom.hpp"
+#include "Projectile.hpp"
 
 class Aircraft : public Entity
 {
@@ -30,7 +31,9 @@ public:
 private:
 	virtual void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 	virtual void UpdateCurrent(sf::Time dt, CommandQueue& commands) override;
-	
+	void CheckProjectileLaunch(sf::Time dt, CommandQueue& commands);
+	bool IsAllied() const;
+
 private:
 	AircraftType m_type;
 	sf::Sprite m_sprite;

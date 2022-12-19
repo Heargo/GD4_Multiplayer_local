@@ -6,6 +6,9 @@
 //changes textures for aircraft and background
 
 #include "World.hpp"
+
+#include "Projectile.hpp"
+
 #include <iostream>
 
 //Collision 

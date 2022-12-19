@@ -11,6 +11,7 @@
 #include "Utility.hpp"
 #include <iostream>
 #include "ProjectileCustom.hpp"
+#include "Projectile.hpp"
 #include "Layers.hpp"
 
 namespace
@@ -50,7 +51,7 @@ Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontH
 	, m_fire_command()
 {
 	m_fire_command.category = static_cast<int>(ReceiverCategories::kScene);
-	m_fire_command.action = [this, &textures](SceneNode& node, sf::Time)
+	m_fire_command.action = [this, &textures](SceneNode& node, sf::Time dt)
 	{
 		CreateBullet(node, textures);
 	};
@@ -92,6 +93,15 @@ unsigned int Aircraft::GetCategory() const
 
 	}
 }
+
+void Aircraft::Fire()
+{
+	if (Table[static_cast<int>(m_type)].m_fire_interval != sf::Time::Zero)
+	{
+		m_is_firing = true;
+	}
+}
+
 
 void Aircraft::IncreaseFireRate()
 {

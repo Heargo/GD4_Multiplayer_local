@@ -135,14 +135,24 @@ void Player::InitializeActions()
     m_action_binding[Action::kMoveUp1].action = DerivedAction<Aircraft>(AircraftMover(0.f, -kPlayerAcceleration, AircraftType::kPlayer1));
     m_action_binding[Action::kMoveDown1].action = DerivedAction<Aircraft>(AircraftMover(0.f, kPlayerAcceleration, AircraftType::kPlayer1));
     
-    m_action_binding[Action::kShoot1].action = DerivedAction<Aircraft>(AircraftShooter(AircraftType::kPlayer1));
+    //m_action_binding[Action::kShoot1].action = DerivedAction<Aircraft>(AircraftShooter(AircraftType::kPlayer1));
+    m_action_binding[Action::kShoot1].action = DerivedAction<Aircraft>([](Aircraft& a, sf::Time dt)
+        {
+            a.Fire();
+        });
+
 
     m_action_binding[Action::kMoveLeft2].action = DerivedAction<Aircraft>(AircraftMover(-kPlayerAcceleration, 0.f, AircraftType::kPlayer2));
     m_action_binding[Action::kMoveRight2].action = DerivedAction<Aircraft>(AircraftMover(kPlayerAcceleration, 0.f, AircraftType::kPlayer2));
     m_action_binding[Action::kMoveUp2].action = DerivedAction<Aircraft>(AircraftMover(0.f, -kPlayerAcceleration, AircraftType::kPlayer2));
     m_action_binding[Action::kMoveDown2].action = DerivedAction<Aircraft>(AircraftMover(0.f, kPlayerAcceleration, AircraftType::kPlayer2));
     
-    m_action_binding[Action::kShoot2].action = DerivedAction<Aircraft>(AircraftShooter(AircraftType::kPlayer2));
+    //m_action_binding[Action::kShoot2].action = DerivedAction<Aircraft>(AircraftShooter(AircraftType::kPlayer2));
+    m_action_binding[Action::kShoot2].action = DerivedAction<Aircraft>([](Aircraft& a, sf::Time dt)
+        {
+            a.Fire();
+        });
+
 }
 
 bool Player::IsRealtimeAction(Action action)
