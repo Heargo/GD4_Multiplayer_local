@@ -140,11 +140,13 @@
     <ClCompile Include="Container.cpp" />
     <ClCompile Include="DataTables.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="GameOverState.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="PauseState.cpp" />
+    <ClCompile Include="Pickup.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ProjectileCustom.cpp" />
     <ClCompile Include="SceneNode.cpp" />
@@ -172,6 +174,7 @@
     <ClInclude Include="DataTables.hpp" />
     <ClInclude Include="Entity.hpp" />
     <ClInclude Include="Font.hpp" />
+    <ClInclude Include="GameOverState.hpp" />
     <ClInclude Include="GameState.hpp" />
     <ClInclude Include="InputNotes.hpp" />
     <ClInclude Include="Label.hpp" />
@@ -179,6 +182,7 @@
     <ClInclude Include="MenuOptions.hpp" />
     <ClInclude Include="MenuState.hpp" />
     <ClInclude Include="PauseState.hpp" />
+    <ClInclude Include="Pickup.hpp" />
     <ClInclude Include="PickupType.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="ProjectileCustom.hpp" />
