@@ -2,7 +2,7 @@
 //this function will check if the projectile is colliding with an entity in the air layer
 //The projectile will be destroyed if it is colliding with an entity (see comment in the function)
 //modify the function detectCollisionAndApplyDamage to be called from the world class (no need to get damage and radius in parametter anymore)
-//the function only detect collision between Players and Projectiles for now
+//the function only detect collision. It also make the player bounce back and get damage when hitting asteroids 
 
 #include "SceneNode.hpp"
 #include "ReceiverCategories.hpp"
@@ -12,6 +12,7 @@
 #include "Aircraft.hpp"
 #include <iostream>
 #include "ProjectileCustom.hpp"
+#include "Asteroid.hpp"
 SceneNode::SceneNode():m_children(), m_children_to_remove(), m_parent(nullptr)
 {
 }
@@ -129,22 +130,72 @@ void SceneNode::DetectCollisionAndApplyDamage()
 
         Aircraft* aircraft = static_cast<Aircraft*>(child.get());
 
-        //if there is a ProjectileCustom then apply damage to child 
+        //detect collision with other object in the same layer
 		for (Ptr& child2 : m_children)
 		{
+            //skip if null
+            if (child2 == nullptr)
+                continue;
+            float distance = sqrt(pow((child2->GetWorldPosition().x - aircraft->GetWorldPosition().x), 2) + pow((child2->GetWorldPosition().y - aircraft->GetWorldPosition().y), 2));
+
+            //Projectile collision
             if (child2->GetCategory() == static_cast<unsigned int>(ReceiverCategories::kProjectile))
             {
-				//cast child2 to projectile
-				ProjectileCustom* projectile = static_cast<ProjectileCustom*>(child2.get());
-				//calculate distance between child2 and aircraft
-				float distance = sqrt(pow((child2->GetWorldPosition().x - aircraft->GetWorldPosition().x), 2) + pow((child2->GetWorldPosition().y - aircraft->GetWorldPosition().y), 2));
+                //cast child2 to projectile
+                ProjectileCustom* projectile = static_cast<ProjectileCustom*>(child2.get());
+                //calculate distance between child2 and aircraft
                 if (distance <= projectile->getRadius())
                 {
-					aircraft->ApplyDamage(projectile->getDamage());
-                    //I know this is not the best way to do this but I tried to use a list of ptr to remove but it did not work
-                    DetachChild(*child2);
+                    if (!aircraft->IsDestroyed())
+                    {
+                        aircraft->ApplyDamage(projectile->getDamage());
+						
+                        //I know this is not the best way to do this but I tried to use a list of ptr to remove but it did not work
+                        DetachChild(*child2);
+                        //childrenToRemove.push_back(child2);
+                    }
                 }
-                
+
+            }
+
+            //Asteroid collision
+            else if (child2->GetCategory() == static_cast<unsigned int>(ReceiverCategories::kAsteroid))
+            {
+                //cast to asteroid
+                Asteroid* asteroid = static_cast<Asteroid*>(child2.get());
+                if (distance <= asteroid->GetRadius())
+                {
+                    if (!aircraft->IsDestroyed())
+					{
+						
+                        //calculate and apply damage to inflict to player depending on player velocity
+                        float velocityFactor = 1.5 * (abs(aircraft->GetVelocity().x) + abs(aircraft->GetVelocity().y));
+                        float sizeFactor = 0.1 * asteroid->GetRadius();
+                        float damageToApply = 0.005 * velocityFactor * sizeFactor;
+                        //print damages
+						std::cout << "dmg :" << damageToApply << std::endl;
+                        
+                        aircraft->ApplyDamage(damageToApply);
+
+					    //move the aircraft back 5 px in the opposite direction of normalized velocity
+					    sf::Vector2f moveBack = aircraft->GetVelocity();
+                        moveBack.x = moveBack.x / sqrt(pow(moveBack.x, 2) + pow(moveBack.y, 2)) * 5;
+                        moveBack.y = moveBack.y / sqrt(pow(moveBack.x, 2) + pow(moveBack.y, 2)) * 5;
+					
+                        aircraft->setPosition(aircraft->getPosition() - moveBack);
+					
+					    //apply bounced velocity
+					    aircraft->SetVelocity(aircraft->GetVelocity().x *-1, aircraft->GetVelocity().y * -1);
+					}
+				}
+			}
+			
+            //detach aircraft if destroyed 
+            if (aircraft->IsDestroyed())
+            {
+                DetachChild(*aircraft);
+                //childrenToRemove.push_back(child);
+                break;
             }
 		}
 		

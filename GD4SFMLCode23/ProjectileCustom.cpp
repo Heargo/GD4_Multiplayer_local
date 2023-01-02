@@ -38,7 +38,7 @@ float ProjectileCustom::getMaxSpeed() const
 
 int ProjectileCustom::getDamage() const
 {
-	return 1;
+	return 10;
 }
 
 int ProjectileCustom::getRadius() const

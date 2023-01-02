@@ -41,7 +41,6 @@ private:
 	TextNode* m_missile_display;
 	float m_travelled_distance;
 	int m_directions_index;
-	
 	SceneNode* m_air_layer;
 
 	const TextureHolder& m_textures;

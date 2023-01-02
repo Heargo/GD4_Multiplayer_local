@@ -77,7 +77,7 @@ void Entity::Repair(unsigned int points)
 
 void Entity::Damage(unsigned int points)
 {
-    assert(points > 0);
+    //assert(points > 0);
     m_hitpoints -= points;
 }
 
