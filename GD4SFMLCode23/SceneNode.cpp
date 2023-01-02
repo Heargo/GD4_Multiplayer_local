@@ -1,6 +1,8 @@
 //HUGO REY D00262075 : Adding the DetectCollisionAndApplyDamage function to the SceneNode class
 //this function will check if the projectile is colliding with an entity in the air layer
 //The projectile will be destroyed if it is colliding with an entity (see comment in the function)
+//modify the function detectCollisionAndApplyDamage to be called from the world class (no need to get damage and radius in parametter anymore)
+//the function only detect collision between Players and Projectiles for now
 
 #include "SceneNode.hpp"
 #include "ReceiverCategories.hpp"
@@ -9,6 +11,7 @@
 #include <memory>
 #include "Aircraft.hpp"
 #include <iostream>
+#include "ProjectileCustom.hpp"
 SceneNode::SceneNode():m_children(), m_children_to_remove(), m_parent(nullptr)
 {
 }
@@ -109,7 +112,7 @@ void SceneNode::OnCommand(const Command& command, sf::Time dt)
     }
 }
 
-void SceneNode::DetectCollisionAndApplyDamage(sf::Vector2f position, float radius,float damage)
+void SceneNode::DetectCollisionAndApplyDamage()
 {
     //std::vector<Ptr&> childrenToRemove={};
 	
@@ -131,11 +134,13 @@ void SceneNode::DetectCollisionAndApplyDamage(sf::Vector2f position, float radiu
 		{
             if (child2->GetCategory() == static_cast<unsigned int>(ReceiverCategories::kProjectile))
             {
+				//cast child2 to projectile
+				ProjectileCustom* projectile = static_cast<ProjectileCustom*>(child2.get());
 				//calculate distance between child2 and aircraft
 				float distance = sqrt(pow((child2->GetWorldPosition().x - aircraft->GetWorldPosition().x), 2) + pow((child2->GetWorldPosition().y - aircraft->GetWorldPosition().y), 2));
-                if (distance <= radius)
+                if (distance <= projectile->getRadius())
                 {
-                    aircraft->ApplyDamage(damage);
+					aircraft->ApplyDamage(projectile->getDamage());
                     //I know this is not the best way to do this but I tried to use a list of ptr to remove but it did not work
                     DetachChild(*child2);
                 }

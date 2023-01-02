@@ -43,6 +43,7 @@ private:
 	FontHolder& m_fonts;
 	SceneNode m_scenegraph;
 	std::array<SceneNode*, static_cast<int>(Layers::kLayerCount)> m_scene_layers;
+	SceneNode* m_air_layer;
 
 	CommandQueue m_command_queue;
 

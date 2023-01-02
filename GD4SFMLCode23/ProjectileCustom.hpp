@@ -34,6 +34,7 @@ public:
 	//virtual sf::FloatRect getBoundingRect const;
 	float getMaxSpeed() const;
 	int getDamage() const;
+	int getRadius() const;
 
 
 private:

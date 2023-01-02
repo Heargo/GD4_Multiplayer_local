@@ -4,6 +4,7 @@
 //Make the camera follow a center point between 2 players
 //add asteroids in the game.
 //changes textures for aircraft and background
+//in every update call, check for collision in the air layer and apply damage
 
 #include "World.hpp"
 #include <iostream>
@@ -58,6 +59,9 @@ void World::Update(sf::Time dt)
 	AdaptPlayerPosition(m_player_2);
 	m_player_1->ApplyFriction();
 	m_player_2->ApplyFriction();
+
+	//calculate damage & collision in air layer
+	m_air_layer->DetectCollisionAndApplyDamage();
 
 	m_scenegraph.Update(dt, m_command_queue);
 	
@@ -116,16 +120,16 @@ void World::BuildScene()
 	m_scene_layers[static_cast<int>(Layers::kBackground)]->AttachChild(std::move(background_sprite));
 
 	//air layer
-	SceneNode* air_layer = m_scene_layers[static_cast<int>(Layers::kAir)];
+	m_air_layer = m_scene_layers[static_cast<int>(Layers::kAir)];
 
 	//Add player's 1 aircraft
-	std::unique_ptr<Aircraft> player1(new Aircraft(AircraftType::kPlayer1, m_textures, m_fonts, air_layer));
+	std::unique_ptr<Aircraft> player1(new Aircraft(AircraftType::kPlayer1, m_textures, m_fonts, m_air_layer));
 	m_player_1 = player1.get();
 	m_player_1->setPosition(m_spawn_position);
 	
 	//Add player's 2 aircraft
 	sf::Vector2f spawnPosition2 = m_spawn_position + sf::Vector2f(100.f, 0.f);
-	std::unique_ptr<Aircraft> player2(new Aircraft(AircraftType::kPlayer2, m_textures, m_fonts, air_layer));
+	std::unique_ptr<Aircraft> player2(new Aircraft(AircraftType::kPlayer2, m_textures, m_fonts, m_air_layer));
 	m_player_2 = player2.get();
 	m_player_2->setPosition(spawnPosition2);
 

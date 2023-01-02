@@ -1,5 +1,5 @@
 //HUGO REY D00262075 : add functions from .hpp 
-//call the update on the air layer for collision and damage
+//remove the update call on the air layer for collision and damage, moved to world to avoid multi call
 
 #pragma once
 #include "ProjectileCustom.hpp"
@@ -41,11 +41,16 @@ int ProjectileCustom::getDamage() const
 	return 1;
 }
 
+int ProjectileCustom::getRadius() const
+{
+	return 10;
+}
+
 void ProjectileCustom::UpdateCurrent(sf::Time dt, CommandQueue& commands)
 {
 	//check if collide with an entity in the air layer
 	//if so, destroy the projectile
-	m_air_layer->DetectCollisionAndApplyDamage(getPosition(), 10, getDamage());
+	//air_layer->DetectCollisionAndApplyDamage(getPosition(), 10, getDamage());
 	
 
 	Entity::UpdateCurrent(dt, commands);

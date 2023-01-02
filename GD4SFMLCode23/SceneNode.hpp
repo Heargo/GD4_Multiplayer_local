@@ -32,7 +32,7 @@ public:
 
 	void OnCommand(const Command& command, sf::Time dt);
 
-	void DetectCollisionAndApplyDamage(sf::Vector2f position, float radius, float damage);
+	void DetectCollisionAndApplyDamage();
 
 private:
 	virtual void UpdateCurrent(sf::Time dt, CommandQueue& commands);
