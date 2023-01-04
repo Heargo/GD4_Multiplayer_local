@@ -4,9 +4,14 @@
 //Make the camera follow a center point between 2 players
 //add asteroids in the game.
 //changes textures for aircraft and background
+//in every update call, check for collision in the air layer and apply damage
 
 #include "World.hpp"
 #include <iostream>
+
+//Collision 
+//sf::FloatRect nextPos;
+//void sf::FloatRect::intersects();
 
 World::World(sf::RenderWindow& window, FontHolder& font)
 	:m_window(window)
@@ -34,6 +39,8 @@ World::World(sf::RenderWindow& window, FontHolder& font)
 	m_player_1->SetVelocity(0.f, 0.f);
 }
 
+
+
 void World::Update(sf::Time dt)
 {
 	//get camera to center between 2 players position
@@ -52,6 +59,9 @@ void World::Update(sf::Time dt)
 	AdaptPlayerPosition(m_player_2);
 	m_player_1->ApplyFriction();
 	m_player_2->ApplyFriction();
+
+	//calculate damage & collision in air layer
+	m_air_layer->DetectCollisionAndApplyDamage();
 
 	m_scenegraph.Update(dt, m_command_queue);
 	
@@ -79,8 +89,10 @@ void World::LoadTextures()
 	//load asteroide texture
 	m_textures.Load(Texture::kAsteroid, "Media/Textures/asteroid.png");
 
-	
-	
+	//loads bullet texture
+	m_textures.Load(Texture::kBullet, "Media/Textures/Bullet.png");
+
+
 }
 
 void World::BuildScene()
@@ -107,14 +119,17 @@ void World::BuildScene()
 	background_sprite->setPosition(m_world_bounds.left - sizeIncrease/2, m_world_bounds.top - sizeIncrease / 2);
 	m_scene_layers[static_cast<int>(Layers::kBackground)]->AttachChild(std::move(background_sprite));
 
+	//air layer
+	m_air_layer = m_scene_layers[static_cast<int>(Layers::kAir)];
+
 	//Add player's 1 aircraft
-	std::unique_ptr<Aircraft> player1(new Aircraft(AircraftType::kPlayer1, m_textures, m_fonts));
+	std::unique_ptr<Aircraft> player1(new Aircraft(AircraftType::kPlayer1, m_textures, m_fonts, m_air_layer));
 	m_player_1 = player1.get();
 	m_player_1->setPosition(m_spawn_position);
 	
 	//Add player's 2 aircraft
 	sf::Vector2f spawnPosition2 = m_spawn_position + sf::Vector2f(100.f, 0.f);
-	std::unique_ptr<Aircraft> player2(new Aircraft(AircraftType::kPlayer2, m_textures, m_fonts));
+	std::unique_ptr<Aircraft> player2(new Aircraft(AircraftType::kPlayer2, m_textures, m_fonts, m_air_layer));
 	m_player_2 = player2.get();
 	m_player_2->setPosition(spawnPosition2);
 
@@ -150,6 +165,27 @@ void World::AdaptPlayerPosition(Aircraft* player)
 	player->setPosition(position);
 
 }
+
+//Collision
+/*
+  for (auto& wall : walls)
+{
+	sf::FloatRect playerBounds = player.getGlobalBounds();
+	FloatRect wallBounds = wall.getGlobalBounds();
+	nextPos = player.getGlobalBounds()
+};
+
+
+	bool collision(const SceneNode& lhs, const SceneNode& rhs)
+	{
+		return lhs.getTransform().intersects(rhs.getTransform());
+	}
+
+
+*/
+
+
+
 
 void World::AdaptPlayerVelocity()
 {
@@ -237,6 +273,9 @@ sf::Vector2f World::GetRandomPosition(int size,std::vector<sf::Vector2f> existin
 	}
 
 	return sf::Vector2f(x, y);
+
+	
+	
 }
 
 

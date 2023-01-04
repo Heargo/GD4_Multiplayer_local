@@ -1,5 +1,6 @@
 // HUGO REY D00262075 : fix the maximum size of aircraft to 100px*100px
-
+// Add Fire() to shoot projectiles.
+// Add BulletPosition() to know where to spawn the projectile. It's adding an offset to the bullet to avoid collision at spawn.
 
 #include "Aircraft.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -9,6 +10,9 @@
 #include "Texture.hpp"
 #include "DataTables.hpp"
 #include "Utility.hpp"
+#include <iostream>
+#include "ProjectileCustom.hpp"
+#include "Layers.hpp"
 
 namespace
 {
@@ -29,7 +33,7 @@ Texture ToTextureID(AircraftType type)
 	return Texture::kPlayer1;
 }
 
-Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontHolder& fonts) 
+Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontHolder& fonts, SceneNode* m_air_layer)
 	: Entity(Table[static_cast<int>(type)].m_hitpoints)
 	, m_type(type) 
 	, m_sprite(textures.Get(ToTextureID(type)))
@@ -40,6 +44,8 @@ Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontH
 	, m_missile_display(nullptr)
 	, m_travelled_distance(0.f)
 	, m_directions_index(0)
+	, m_textures(textures)
+	, m_air_layer(m_air_layer)
 {
 	sf::FloatRect bounds = m_sprite.getLocalBounds();
 	m_sprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
@@ -77,6 +83,7 @@ unsigned int Aircraft::GetCategory() const
 		return static_cast<unsigned int>(ReceiverCategories::kEnemyAircraft);
 
 	}
+	//return static_cast<unsigned int>(ReceiverCategories::kDamagable);
 }
 
 void Aircraft::IncreaseFireRate()
@@ -106,7 +113,7 @@ void Aircraft::UpdateTexts()
 	m_health_display->setPosition(0.f, 50.f);
 	m_health_display->setRotation(-getRotation());
 
-	if (m_missile_ammo)
+	/*if (m_missile_ammo)
 	{
 		if (m_missile_ammo == 0)
 		{
@@ -116,7 +123,7 @@ void Aircraft::UpdateTexts()
 		{
 			m_missile_display->SetString("M: " + std::to_string(m_missile_ammo));
 		}
-	}
+	}*/
 }
 
 void Aircraft::UpdateMovementPattern(sf::Time dt)
@@ -149,6 +156,94 @@ float Aircraft::GetMaxSpeed() const
 {
 	return Table[static_cast<int>(m_type)].m_speed;
 }
+
+void Aircraft::Fire()
+{
+	//print to console to check if firing
+	std::cout << "Firing" << std::endl;
+
+	//get the direction of the aircraft
+	float rotation = getRotation();
+	
+	//create a bullet
+	ProjectileCustom::Type bulletType;
+	switch (m_type)
+	{
+	case AircraftType::kPlayer1:
+		bulletType = ProjectileCustom::Type::kPlayer1Bullet;
+		break;
+	case AircraftType::kPlayer2:
+		bulletType = ProjectileCustom::Type::kPlayer2Bullet;
+		break;
+
+	default:
+		bulletType = ProjectileCustom::Type::kPlayer1Bullet;
+		break;
+	}
+
+	std::unique_ptr<ProjectileCustom> bullet(new ProjectileCustom(bulletType, m_textures, m_air_layer));
+	bullet->setPosition(BulletPosition());
+	bullet->setRotation(rotation);
+	//set the velocity of the bullet depending on the rotation of the aircraft
+	switch ((int)rotation)
+	{
+		case 0:
+			bullet->SetVelocity(0, -1000);
+			break;
+		case 90:
+			bullet->SetVelocity(1000, 0);
+			break;
+		case 180:
+			bullet->SetVelocity(0, 1000);
+			break;
+		case 270:
+			bullet->SetVelocity(-1000, 0);
+			break;
+		default:
+			bullet->SetVelocity(0, -1000);
+			break;
+	}
+	
+	//add bullet to air layout
+	m_air_layer->AttachChild(std::move(bullet));
+	
+}
+
+sf::Vector2f Aircraft::BulletPosition()
+{
+	//put the bullet 10px in front of the aircraft
+	float rotation = getRotation();
+	int offset = 50;
+	sf::Vector2f pos = getPosition();
+	switch ((int)rotation)
+	{
+	case 0:
+		pos.y -= offset;
+		break;
+	case 90:
+		pos.x += offset;
+		break;
+	case 180:
+		pos.y += offset;
+		break;
+	case 270:
+		pos.x -= offset;
+		break;
+	default:
+		pos.y -= offset;
+		break;
+	}
+
+	return pos;
+}
+
+void Aircraft::ApplyDamage(float damage)
+{
+	std::cout << "I took damage" << std::endl;	
+	Damage((int)damage);
+
+}
+
 
 AircraftType Aircraft::GetType()
 {

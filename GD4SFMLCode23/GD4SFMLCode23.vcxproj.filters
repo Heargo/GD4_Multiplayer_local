@@ -93,6 +93,9 @@
     <ClCompile Include="Asteroid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ProjectileCustom.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Texture.hpp">
@@ -200,7 +203,7 @@
     <ClInclude Include="DataTables.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ProjectileType.hpp">
+    <ClInclude Include="ProjectileCustom.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PickupType.hpp">

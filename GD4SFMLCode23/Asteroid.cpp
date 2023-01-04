@@ -18,6 +18,17 @@ Asteroid::Asteroid(int size, const TextureHolder& textures)
 	m_sprite.setScale(m_size / bounds.width, m_size / bounds.height);
 }
 
+unsigned int Asteroid::GetCategory() const
+{
+	return static_cast<unsigned int>(ReceiverCategories::kAsteroid);
+}
+
+int Asteroid::GetRadius()
+{
+	//get the radius of the sprite taking scale into account
+	return static_cast<int>(std::max(m_sprite.getScale().x, m_sprite.getScale().y) * m_sprite.getTexture()->getSize().x / 2);
+}
+
 void Asteroid::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {	
 	target.draw(m_sprite, states);

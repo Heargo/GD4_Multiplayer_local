@@ -1,4 +1,5 @@
 //HUGO REY D00262075 : add GetType() to know if aircraft is player 1 or 2
+// add Fire() to shoot projectiles
 #pragma once
 
 #include "Entity.hpp"
@@ -10,7 +11,7 @@
 class Aircraft : public Entity
 {
 public:
-	Aircraft(AircraftType type, const TextureHolder& textures, const FontHolder& fonts);
+	Aircraft(AircraftType type, const TextureHolder& textures, const FontHolder& fonts, SceneNode* m_air_layer );
 	unsigned int GetCategory() const override;
 
 	void IncreaseFireRate();
@@ -19,11 +20,15 @@ public:
 	void UpdateTexts();
 	void UpdateMovementPattern(sf::Time dt);
 	float GetMaxSpeed() const;
+	void Fire();
+	void ApplyDamage(float damage);
+
 	AircraftType GetType();
 
 private:
 	virtual void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 	virtual void UpdateCurrent(sf::Time dt, CommandQueue& commands) override;
+	sf::Vector2f BulletPosition();
 	
 private:
 	AircraftType m_type;
@@ -36,4 +41,7 @@ private:
 	TextNode* m_missile_display;
 	float m_travelled_distance;
 	int m_directions_index;
+	SceneNode* m_air_layer;
+
+	const TextureHolder& m_textures;
 };
