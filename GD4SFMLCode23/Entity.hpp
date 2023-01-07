@@ -29,5 +29,5 @@ protected:
 private:
 	sf::Vector2f m_velocity;
 	void RegulatePlayerSpeed();
-	unsigned int m_hitpoints;
+	int m_hitpoints;
 };

@@ -3,7 +3,8 @@
 //The projectile will be destroyed if it is colliding with an entity (see comment in the function)
 //modify the function detectCollisionAndApplyDamage to be called from the world class (no need to get damage and radius in parametter anymore)
 //the function only detect collision. It also make the player bounce back and get damage when hitting asteroids 
-
+//It also destroy the projectile when hitting an asteroid.
+// todo: refactor using entity instead of duplicating code for asteroid and player
 #include "SceneNode.hpp"
 #include "ReceiverCategories.hpp"
 #include "Command.hpp"
@@ -124,22 +125,30 @@ void SceneNode::DetectCollisionAndApplyDamage()
 		if (child == nullptr)
 			continue;
 
-        // skip if not aircraft
-        if (child->GetCategory() != static_cast<unsigned int>(ReceiverCategories::kPlayerAircraft))
-            continue;
+		// check only of it's aircraft or a asteroid
+        Aircraft* aircraft = nullptr;
+		Asteroid* asteroid = nullptr;
+        
+        if (child->GetCategory() == static_cast<unsigned int>(ReceiverCategories::kPlayerAircraft))
+            aircraft = static_cast<Aircraft*>(child.get());
 
-        Aircraft* aircraft = static_cast<Aircraft*>(child.get());
+        else if (child->GetCategory() == static_cast<unsigned int>(ReceiverCategories::kAsteroid))
+            asteroid = static_cast<Asteroid*>(child.get());
 
+        else continue;
+		
         //detect collision with other object in the same layer
 		for (Ptr& child2 : m_children)
 		{
             //skip if null
             if (child2 == nullptr)
                 continue;
-            float distance = sqrt(pow((child2->GetWorldPosition().x - aircraft->GetWorldPosition().x), 2) + pow((child2->GetWorldPosition().y - aircraft->GetWorldPosition().y), 2));
+			
+            float distance = sqrt(pow((child2->GetWorldPosition().x - child->GetWorldPosition().x), 2) + pow((child2->GetWorldPosition().y - child->GetWorldPosition().y), 2));
 
-            //Projectile collision
-            if (child2->GetCategory() == static_cast<unsigned int>(ReceiverCategories::kProjectile))
+			//aircraft - Projectile collision
+            if (child2->GetCategory() == static_cast<unsigned int>(ReceiverCategories::kProjectile)
+				&& aircraft != nullptr)
             {
                 //cast child2 to projectile
                 ProjectileCustom* projectile = static_cast<ProjectileCustom*>(child2.get());
@@ -158,8 +167,9 @@ void SceneNode::DetectCollisionAndApplyDamage()
 
             }
 
-            //Asteroid collision
-            else if (child2->GetCategory() == static_cast<unsigned int>(ReceiverCategories::kAsteroid))
+            //aircraft - Asteroid collision
+            else if (child2->GetCategory() == static_cast<unsigned int>(ReceiverCategories::kAsteroid)
+				&& aircraft != nullptr)
             {
                 //cast to asteroid
                 Asteroid* asteroid = static_cast<Asteroid*>(child2.get());
@@ -172,8 +182,12 @@ void SceneNode::DetectCollisionAndApplyDamage()
                         float velocityFactor = 1.5 * (abs(aircraft->GetVelocity().x) + abs(aircraft->GetVelocity().y));
                         float sizeFactor = 0.1 * asteroid->GetRadius();
                         float damageToApply = 0.005 * velocityFactor * sizeFactor;
-                        //print damages
-						std::cout << "dmg :" << damageToApply << std::endl;
+                        //print damages for balance
+						//do a quater of this damage to the asteroid
+						int damageToAsteroid = damageToApply / 4;
+						asteroid->Damage(damageToAsteroid);
+						std::cout << "dmg for player :" << damageToApply << std::endl;
+                        std::cout << "dmg for asteroid :" << damageToApply / 4<< std::endl;
                         
                         aircraft->ApplyDamage(damageToApply);
 
@@ -190,13 +204,38 @@ void SceneNode::DetectCollisionAndApplyDamage()
 				}
 			}
 			
+			//Asteroid - projectile collision
+            else if (child2->GetCategory() == static_cast<unsigned int>(ReceiverCategories::kProjectile)
+                && asteroid != nullptr)
+            {
+				//cast child2 to projectile
+				ProjectileCustom* projectile = static_cast<ProjectileCustom*>(child2.get());
+				//calculate distance between child2 and asteroid
+				if (distance <= asteroid->GetRadius())
+				{
+					if (!asteroid->IsDestroyed())
+					{
+						asteroid->Damage(projectile->getDamage());
+						//same as above
+						DetachChild(*child2);
+					}
+				}
+            }
+			
             //detach aircraft if destroyed 
-            if (aircraft->IsDestroyed())
+            if (aircraft!=nullptr && aircraft->IsDestroyed())
             {
                 DetachChild(*aircraft);
                 //childrenToRemove.push_back(child);
                 break;
             }
+			//detach asteroid if destroyed 
+			else if (asteroid != nullptr && asteroid->IsDestroyed())
+			{
+				DetachChild(*asteroid);
+				//childrenToRemove.push_back(child);
+				break;
+			}
 		}
 		
 	}

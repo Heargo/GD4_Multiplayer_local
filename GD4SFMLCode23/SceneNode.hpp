@@ -45,7 +45,6 @@ private:
 	void DrawChildren(sf::RenderTarget& target, sf::RenderStates states) const;
 	virtual unsigned int GetCategory() const;
 	
-
 private:
 	std::vector<Ptr> m_children;
 	std::vector<Ptr> m_children_to_remove;
