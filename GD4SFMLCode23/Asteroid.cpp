@@ -6,7 +6,7 @@
 #include <iostream>
 
 Asteroid::Asteroid(int size, const TextureHolder& textures)
-	:Entity(5*(size / 50))
+	:Entity(size)
 	, m_size(size)
 	, m_sprite(textures.Get(Texture::kAsteroid))
 {
