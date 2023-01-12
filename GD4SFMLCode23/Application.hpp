@@ -8,6 +8,10 @@
 #include "ResourceIdentifiers.hpp"
 #include "StateStack.hpp"
 
+
+#include "MusicPlayer.hpp"
+#include "SoundPlayer.hpp"
+
 class Application
 {
 public:
@@ -29,5 +33,8 @@ private:
 
 	StateStack m_stack;
 	static const sf::Time kTimePerFrame;
+
+	MusicPlayer m_music;
+	SoundPlayer m_sound;
 };
 

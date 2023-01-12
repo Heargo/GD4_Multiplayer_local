@@ -19,11 +19,11 @@ GameOverState::GameOverState(StateStack& stack, Context context)
     m_game_over_text.setFont(font);
     if (context.player->GetMissionStatus() == MissionStatus::kMissionSuccess)
     {
-        m_game_over_text.setString("Player 1 Wins");
+        m_game_over_text.setString("Mission Success");
     }
     else
     {
-        m_game_over_text.setString("Player 2 Wins");
+        m_game_over_text.setString("Mission Failure");
     }
 
     m_game_over_text.setCharacterSize(70);

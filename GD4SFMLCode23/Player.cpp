@@ -125,6 +125,17 @@ sf::Keyboard::Key Player::GetAssignedKey(Action action) const
     return sf::Keyboard::Unknown;
 }
 
+
+void Player::SetMissionStatus(MissionStatus status)
+{
+    m_current_mission_status = status;
+}
+
+MissionStatus Player::GetMissionStatus() const
+{
+    return m_current_mission_status;
+}
+
 void Player::InitializeActions()
 {
     //TODO Normalize to avoid faster movement along diagonals

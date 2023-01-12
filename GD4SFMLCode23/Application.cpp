@@ -10,7 +10,7 @@ const sf::Time Application::kTimePerFrame = sf::seconds(1.f / 60.f);
 
 Application::Application()
 	: m_window(sf::VideoMode(1024, 768), "States", sf::Style::Close)
-	, m_stack(State::Context(m_window, m_textures, m_fonts, m_player))
+	, m_stack(State::Context(m_window, m_textures, m_fonts, m_player, m_music, m_sound))
 {
 	m_window.setKeyRepeatEnabled(false);
 
@@ -79,4 +79,5 @@ void Application::RegisterStates()
 	m_stack.RegisterState<GameState>(StateID::kGame);
 	m_stack.RegisterState<PauseState>(StateID::kPause);
 	m_stack.RegisterState<SettingsState>(StateID::kSettings);
+	m_stack.RegisterState<GameOverState>(StateID::kGameOver);
 }
