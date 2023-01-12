@@ -7,7 +7,8 @@ enum class ReceiverCategories
 	kPlayerAircraft = 1 << 1,
 	kEnemyAircraft = 1 << 2,
 	kProjectile = 1 << 3,
-	kAsteroid = 1 << 4
+	kAsteroid = 1 << 4,
+	kSoundEffect = 1 << 5,
 };
 
 //A message that would be sent to all aircraft

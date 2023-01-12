@@ -7,6 +7,7 @@
 #include "ResourceIdentifiers.hpp"
 #include <SFML/Graphics/Sprite.hpp>
 #include "TextNode.hpp"
+#include "ProjectileCustom.hpp"
 
 class Aircraft : public Entity
 {
@@ -22,13 +23,21 @@ public:
 	float GetMaxSpeed() const;
 	void Fire();
 	void ApplyDamage(float damage);
+	bool IsMarkedForRemoval() const override;
 
 	AircraftType GetType();
+
+
+	void PlayLocalSound(CommandQueue& commands, SoundEffect effect);
 
 private:
 	virtual void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 	virtual void UpdateCurrent(sf::Time dt, CommandQueue& commands) override;
 	sf::Vector2f BulletPosition();
+
+	void CheckProjectileLaunch(sf::Time dt, CommandQueue& commands);
+
+	void PlayLocalSound(CommandQueue& commands, SoundEffect effect);
 	
 private:
 	AircraftType m_type;
@@ -42,6 +51,13 @@ private:
 	float m_travelled_distance;
 	int m_directions_index;
 	SceneNode* m_air_layer;
+
+	Command m_fire_command;
+
+	bool m_is_firing;
+	sf::Time m_fire_countdown;
+
+	bool m_played_explosion_sound;
 
 	const TextureHolder& m_textures;
 };

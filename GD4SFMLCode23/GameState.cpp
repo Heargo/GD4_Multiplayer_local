@@ -3,7 +3,7 @@
 
 GameState::GameState(StateStack& stack, Context context)
     : State(stack, context)
-    , m_world(*context.window, *context.fonts)
+    , m_world(*context.window, *context.fonts, *context.sounds)
     , m_player(*context.player)
 {
     // Plays game theme
@@ -18,6 +18,18 @@ void GameState::Draw()
 bool GameState::Update(sf::Time dt)
 {
     m_world.Update(dt);
+
+    if (!m_world.HasAlivePlayer1())
+    {
+        m_player.SetMissionStatus(MissionStatus::kMissionFailure);
+        RequestStackPush(StateID::kGameOver);
+    }
+    else if (!m_world.HasAlivePlayer2())
+    {
+        m_player.SetMissionStatus(MissionStatus::kMissionSuccess);
+        RequestStackPush(StateID::kGameOver);
+    }
+
     CommandQueue& commands = m_world.GetCommandQueue();
     m_player.HandleRealtimeInput(commands);
     return true;

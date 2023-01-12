@@ -27,6 +27,8 @@ public:
 	void Update(sf::Time dt);
 	void Draw();
 	CommandQueue& GetCommandQueue();
+	bool HasAlivePlayer1() const;
+	bool HasAlivePlayer2() const;
 
 private:
 	void LoadTextures();

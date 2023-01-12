@@ -10,9 +10,11 @@
 #include "Texture.hpp"
 #include "DataTables.hpp"
 #include "Utility.hpp"
+#include "Utility.cpp"
 #include <iostream>
 #include "ProjectileCustom.hpp"
 #include "Layers.hpp"
+#include "SoundNode.hpp"
 
 namespace
 {
@@ -46,6 +48,7 @@ Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontH
 	, m_directions_index(0)
 	, m_textures(textures)
 	, m_air_layer(m_air_layer)
+	, m_played_explosion_sound(false)
 {
 	sf::FloatRect bounds = m_sprite.getLocalBounds();
 	m_sprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
@@ -237,6 +240,24 @@ sf::Vector2f Aircraft::BulletPosition()
 	return pos;
 }
 
+void Aircraft::CheckProjectileLaunch(sf::Time dt, CommandQueue& commands)
+{
+
+	if (m_is_firing && m_fire_countdown <= sf::Time::Zero)
+	{
+		PlayLocalSound(commands, SoundEffect::kAlliedGunfire);
+		commands.Push(m_fire_command);
+		m_fire_countdown += Table[static_cast<int>(m_type)].m_fire_interval / (m_fire_rate + 1.f);
+		m_is_firing = false;
+	}
+	else if (m_fire_countdown > sf::Time::Zero)
+	{
+		//Wait, can't fire
+		m_fire_countdown -= dt;
+		m_is_firing = false;
+	}
+}
+
 void Aircraft::ApplyDamage(float damage)
 {
 	std::cout << "I took damage" << std::endl;	
@@ -255,8 +276,42 @@ void Aircraft::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) co
 	target.draw(m_sprite, states);
 }
 
+bool Aircraft::IsMarkedForRemoval() const
+{
+	return IsDestroyed();
+}
+
 void Aircraft::UpdateCurrent(sf::Time dt, CommandQueue& commands)
 {
 	UpdateTexts();
 	Entity::UpdateCurrent(dt, commands);
+
+	if (IsDestroyed())
+	{
+		
+		// Play explosion sound only once
+		if (!m_played_explosion_sound)
+		{
+			SoundEffect soundEffect = (Utility::RandomInt(2) == 0) ? SoundEffect::kExplosion : SoundEffect::kExplosion;
+			PlayLocalSound(commands, soundEffect);
+
+			m_played_explosion_sound = true;
+		}
+		return;
+	}
+}
+
+void Aircraft::PlayLocalSound(CommandQueue& commands, SoundEffect effect)
+{
+	sf::Vector2f world_position = GetWorldPosition();
+
+	Command command;
+	command.category = static_cast<int>(ReceiverCategories::kSoundEffect);
+	command.action = DerivedAction<SoundNode>(
+		[effect, world_position](SoundNode& node, sf::Time)
+		{
+			node.PlaySound(effect, world_position);
+		});
+
+	commands.Push(command);
 }

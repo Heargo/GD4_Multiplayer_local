@@ -73,6 +73,17 @@ void World::Draw()
 	m_window.draw(m_scenegraph);
 }
 
+
+bool World::HasAlivePlayer1() const
+{
+	return !m_player_aircraft->IsMarkedForRemoval();
+}
+
+bool World::HasAlivePlayer2() const
+{
+	return !m_player_aircraft->IsMarkedForRemoval();
+}
+
 CommandQueue& World::GetCommandQueue()
 {
 	return m_command_queue;

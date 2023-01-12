@@ -5,6 +5,7 @@
 #include "GameState.hpp"
 #include "PauseState.hpp"
 #include "SettingsState.hpp"
+#include "GameOverState.hpp"
 
 const sf::Time Application::kTimePerFrame = sf::seconds(1.f / 60.f);
 
@@ -16,10 +17,11 @@ Application::Application()
 
 	m_fonts.Load(Font::kMain, "Media/Fonts/Sansation.ttf");
 	m_textures.Load(Texture::kTitleScreen, "Media/Textures/TitleScreen.png");
+	m_textures.Load(Texture::kButtons, "Media/Textures/Buttons.png");
 	m_textures.Load(Texture::kButtonNormal, "Media/Textures/ButtonNormal.png");
 	m_textures.Load(Texture::kButtonSelected, "Media/Textures/ButtonSelected.png");
 	m_textures.Load(Texture::kButtonPressed, "Media/Textures/ButtonPressed.png");
-
+	
 	RegisterStates();
 	m_stack.PushState(StateID::kTitle);
 }
