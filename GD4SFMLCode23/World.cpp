@@ -76,12 +76,12 @@ void World::Draw()
 
 bool World::HasAlivePlayer1() const
 {
-	return !m_player_aircraft->IsMarkedForRemoval();
+	return !m_player_1->IsMarkedForRemoval();
 }
 
 bool World::HasAlivePlayer2() const
 {
-	return !m_player_aircraft->IsMarkedForRemoval();
+	return !m_player_2->IsMarkedForRemoval();
 }
 
 CommandQueue& World::GetCommandQueue()
