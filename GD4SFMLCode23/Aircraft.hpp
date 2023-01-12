@@ -23,7 +23,7 @@ public:
 	float GetMaxSpeed() const;
 	void Fire();
 	void ApplyDamage(float damage);
-	bool IsMarkedForRemoval() const override;
+	bool IsMarkedForRemoval() const;
 
 	AircraftType GetType();
 
