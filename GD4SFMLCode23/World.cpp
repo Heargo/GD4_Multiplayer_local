@@ -7,7 +7,14 @@
 //in every update call, check for collision in the air layer and apply damage
 
 #include "World.hpp"
+#include "Projectile.hpp"
+
+#include "Utility.hpp"
+
+#include "SoundNode.hpp"
+#include <SFML/Graphics/RenderWindow.hpp>
 #include <iostream>
+#include <limits>
 
 //Collision 
 //sf::FloatRect nextPos;
