@@ -151,6 +151,7 @@
     <ClCompile Include="ProjectileCustom.cpp" />
     <ClCompile Include="SceneNode.cpp" />
     <ClCompile Include="SettingsState.cpp" />
+    <ClCompile Include="SoundPlayer.cpp" />
     <ClCompile Include="SpriteNode.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="StateStack.cpp" />

@@ -9,6 +9,8 @@
 #include "Asteroid.hpp"
 #include "Layers.hpp"
 
+#include "SoundPlayer.hpp"
+
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/Graphics/View.hpp>
 #include <SFML/Graphics/Texture.hpp>
@@ -23,7 +25,7 @@
 class World : private sf::NonCopyable
 {
 public:
-	explicit World(sf::RenderWindow& window, FontHolder& font);
+	explicit World(sf::RenderWindow& window, FontHolder& font, SoundPlayer& sounds);
 	void Update(sf::Time dt);
 	void Draw();
 	CommandQueue& GetCommandQueue();
@@ -35,6 +37,7 @@ private:
 	void BuildScene();
 	void AdaptPlayerPosition(Aircraft* player);
 	void AdaptPlayerVelocity();
+	void UpdateSounds();
 	void SpawnAsteroides(int nbAsteroides);
 	sf::Vector2f GetRandomPosition(int size,std::vector<sf::Vector2f> existingAsteroides,std::vector<int> existingAsteroidesSize);
 
@@ -43,6 +46,7 @@ private:
 	sf::View m_camera;
 	TextureHolder m_textures;
 	FontHolder& m_fonts;
+	SoundPlayer& m_sounds;
 	SceneNode m_scenegraph;
 	std::array<SceneNode*, static_cast<int>(Layers::kLayerCount)> m_scene_layers;
 	SceneNode* m_air_layer;

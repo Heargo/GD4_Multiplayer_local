@@ -20,11 +20,12 @@
 //sf::FloatRect nextPos;
 //void sf::FloatRect::intersects();
 
-World::World(sf::RenderWindow& window, FontHolder& font)
+World::World(sf::RenderWindow& window, FontHolder& font, SoundPlayer& sounds)
 	:m_window(window)
 	,m_camera(window.getDefaultView())
 	,m_textures()
 	,m_fonts(font)
+	,m_sounds(sounds)
 	,m_scenegraph()
 	,m_scene_layers()
 	,m_world_bounds(0.f,0.f, 1200.f, 1200.f) //make the background image bigger that canvas
@@ -71,6 +72,8 @@ void World::Update(sf::Time dt)
 	m_air_layer->DetectCollisionAndApplyDamage();
 
 	m_scenegraph.Update(dt, m_command_queue);
+
+	UpdateSounds();
 	
 }
 
@@ -156,6 +159,10 @@ void World::BuildScene()
 
 	//add 30 asteroids
 	SpawnAsteroides(30);
+
+	// Add sound effect node
+	std::unique_ptr<SoundNode> soundNode(new SoundNode(m_sounds));
+	m_scenegraph.AttachChild(std::move(soundNode));
 
 }
 
@@ -294,6 +301,16 @@ sf::Vector2f World::GetRandomPosition(int size,std::vector<sf::Vector2f> existin
 
 	
 	
+}
+
+void World::UpdateSounds()
+{
+	// Set listener's position to player position
+	m_sounds.SetListenerPosition(m_player_1->GetWorldPosition());
+	m_sounds.SetListenerPosition(m_player_2->GetWorldPosition());
+
+	// Remove unused sounds
+	m_sounds.RemoveStoppedSounds();
 }
 
 
