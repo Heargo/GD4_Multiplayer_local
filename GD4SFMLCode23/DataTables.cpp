@@ -23,25 +23,6 @@ std::vector<AircraftData> InitializeAircraftData()
     return data;
 }
 
-//Initializes the Projectile Data, such as damage, speed, and texture
-//std::vector<ProjectileData> InitializeProjectileData()
-//{
-//    std::vector<ProjectileData> data(static_cast<int>(ProjectileType::kProjectileCount));
-//
-//    data[static_cast<int>(ProjectileType::kAlliedBullet)].m_damage = 10;
-//    data[static_cast<int>(ProjectileType::kAlliedBullet)].m_speed = 300;
-//    data[static_cast<int>(ProjectileType::kAlliedBullet)].m_texture = Texture::kBullet;
-//
-//    data[static_cast<int>(ProjectileType::kEnemyBullet)].m_damage = 10;
-//    data[static_cast<int>(ProjectileType::kEnemyBullet)].m_speed = 300;
-//    data[static_cast<int>(ProjectileType::kEnemyBullet)].m_texture = Texture::kBullet;
-//
-//    data[static_cast<int>(ProjectileType::kMissile)].m_damage = 200;
-//    data[static_cast<int>(ProjectileType::kAlliedBullet)].m_speed = 350;
-//    data[static_cast<int>(ProjectileType::kMissile)].m_texture = Texture::kMissile;
-//    return data;
-//}
-
 std::vector<PickupData> InitializePickupData()
 {
     std::vector<PickupData> data(static_cast<int>(PickupType::kPickupCount));

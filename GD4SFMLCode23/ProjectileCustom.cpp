@@ -48,11 +48,6 @@ int ProjectileCustom::getRadius() const
 
 void ProjectileCustom::UpdateCurrent(sf::Time dt, CommandQueue& commands)
 {
-	//check if collide with an entity in the air layer
-	//if so, destroy the projectile
-	//air_layer->DetectCollisionAndApplyDamage(getPosition(), 10, getDamage());
-	
-
 	Entity::UpdateCurrent(dt, commands);
 }
 

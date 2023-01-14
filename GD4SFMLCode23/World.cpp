@@ -166,26 +166,6 @@ void World::AdaptPlayerPosition(Aircraft* player)
 
 }
 
-//Collision
-/*
-  for (auto& wall : walls)
-{
-	sf::FloatRect playerBounds = player.getGlobalBounds();
-	FloatRect wallBounds = wall.getGlobalBounds();
-	nextPos = player.getGlobalBounds()
-};
-
-
-	bool collision(const SceneNode& lhs, const SceneNode& rhs)
-	{
-		return lhs.getTransform().intersects(rhs.getTransform());
-	}
-
-
-*/
-
-
-
 
 void World::AdaptPlayerVelocity()
 {
