@@ -16,6 +16,10 @@ Asteroid::Asteroid(int size, const TextureHolder& textures)
 	
 	//scale the sprite to the size of the asteroid
 	m_sprite.setScale(m_size / bounds.width, m_size / bounds.height);
+
+	//get random rotation direction (-1 or 1)
+	m_rotationDirection = (rand() % 2) ==0 ? 1 : -1;	
+	
 }
 
 unsigned int Asteroid::GetCategory() const
@@ -37,5 +41,5 @@ void Asteroid::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) co
 void Asteroid::UpdateCurrent(sf::Time dt, CommandQueue& commands)
 {
 	//Entity::UpdateCurrent(dt, commands);
-	m_sprite.rotate(0.05);
+	m_sprite.rotate(0.05 * m_rotationDirection);
 }

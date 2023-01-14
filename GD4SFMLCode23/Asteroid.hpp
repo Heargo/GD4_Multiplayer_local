@@ -24,6 +24,7 @@ private:
 	sf::Sprite m_sprite;
 	virtual void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
 	virtual void UpdateCurrent(sf::Time dt, CommandQueue& commands) override;
+	int m_rotationDirection;
 	
 };
 
