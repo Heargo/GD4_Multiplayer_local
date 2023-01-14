@@ -20,7 +20,7 @@ World::World(sf::RenderWindow& window, FontHolder& font)
 	,m_fonts(font)
 	,m_scenegraph()
 	,m_scene_layers()
-	,m_world_bounds(0.f,0.f, 1200.f, 1200.f) //make the background image bigger that canvas
+	,m_world_bounds(0.f,0.f, 5000.f, 5000.f) //make the background image bigger that canvas
 	,m_spawn_position()
 	,m_scrollspeed(-50.f)
 	, m_player_1(nullptr)
@@ -109,7 +109,7 @@ void World::BuildScene()
 	sf::Texture& texture = m_textures.Get(Texture::kBackground);
 	sf::IntRect textureRect(m_world_bounds);
 	//expand textureRect to make the background bigger than the canvas
-	int sizeIncrease = 1000;
+	int sizeIncrease = 1920;
 	textureRect.width += sizeIncrease;
 	textureRect.height += sizeIncrease;
 	texture.setRepeated(true);
@@ -137,7 +137,7 @@ void World::BuildScene()
 	m_scene_layers[static_cast<int>(Layers::kAir)]->AttachChild(std::move(player2));
 
 	//add 30 asteroids
-	SpawnAsteroides(30);
+	SpawnAsteroides(60);
 
 }
 
