@@ -1,3 +1,5 @@
+//HUGO REY D00262075 : Add the game over handling here since to change state I need to access the stack
+
 #include "GameState.hpp"
 #include "Player.hpp"
 
@@ -16,6 +18,17 @@ void GameState::Draw()
 bool GameState::Update(sf::Time dt)
 {
     m_world.Update(dt);
+	AircraftType game_over = m_world.IsGameOver();
+	if (game_over != AircraftType::kNone)
+    {
+        RequestStackPop();
+		if (game_over == AircraftType::kPlayer1)
+			EditContextCustomInfo("Player 2 wins!");
+        else if(game_over == AircraftType::kPlayer2)
+            EditContextCustomInfo("Player 1 wins!");
+		
+		RequestStackPush(StateID::kGameOver);
+    }
     CommandQueue& commands = m_world.GetCommandQueue();
     m_player.HandleRealtimeInput(commands);
     return true;

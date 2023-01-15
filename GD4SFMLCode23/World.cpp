@@ -5,13 +5,10 @@
 //add asteroids in the game.
 //changes textures for aircraft and background
 //in every update call, check for collision in the air layer and apply damage
+//Added the IsGameOver function to check if the game is over and return the dead player.
 
 #include "World.hpp"
 #include <iostream>
-
-//Collision 
-//sf::FloatRect nextPos;
-//void sf::FloatRect::intersects();
 
 World::World(sf::RenderWindow& window, FontHolder& font)
 	:m_window(window)
@@ -76,6 +73,16 @@ void World::Draw()
 CommandQueue& World::GetCommandQueue()
 {
 	return m_command_queue;
+}
+
+AircraftType World::IsGameOver()
+{
+	if (m_player_1->IsDestroyed())
+		return AircraftType::kPlayer1;
+	else if (m_player_2->IsDestroyed())
+		return AircraftType::kPlayer2;
+	else
+		return AircraftType::kNone;
 }
 
 void World::LoadTextures()

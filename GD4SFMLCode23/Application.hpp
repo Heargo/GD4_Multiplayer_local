@@ -29,5 +29,7 @@ private:
 
 	StateStack m_stack;
 	static const sf::Time kTimePerFrame;
+
+	std::string m_custom_info;
 };
 

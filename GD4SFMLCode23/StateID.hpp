@@ -1,3 +1,5 @@
+//HUGO REY D00262075 : Added kGameOver state
+
 #pragma once
 enum class StateID
 {
@@ -5,6 +7,7 @@ enum class StateID
 	kTitle,
 	kMenu,
 	kGame,
+	kGameOver,
 	kPause,
 	kSettings
 };

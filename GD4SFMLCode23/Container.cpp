@@ -1,5 +1,7 @@
-#include "Container.hpp"
+//HUGO REY D00262075 : remove the possibility to interact with button with space since 
+//it's used to fire in the game
 
+#include "Container.hpp"
 #include <SFML/Window/Event.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
@@ -41,7 +43,7 @@ namespace GUI
             {
                 SelectNext();
             }
-            else if (event.key.code == sf::Keyboard::Return || event.key.code == sf::Keyboard::Space)
+            else if (event.key.code == sf::Keyboard::Return)
             {
                 if (HasSelection())
                 {

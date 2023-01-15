@@ -27,7 +27,8 @@ public:
 	void Update(sf::Time dt);
 	void Draw();
 	CommandQueue& GetCommandQueue();
-
+	AircraftType IsGameOver();
+	
 private:
 	void LoadTextures();
 	void BuildScene();

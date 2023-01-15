@@ -1,7 +1,8 @@
+//HUGO REY D00262075 : Added custom_info in the context. See .cpp for more details
+
 #pragma once
 #include "StateID.hpp"
 #include "ResourceIdentifiers.hpp"
-
 #include <SFML/System/Time.hpp>
 #include <SFML/Window/Event.hpp>
 
@@ -21,11 +22,12 @@ public:
 
 	struct Context
 	{
-		Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts, Player& player);
+		Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts, Player& player, std::string& customInfo);
 		sf::RenderWindow* window;
 		TextureHolder* textures;
 		FontHolder* fonts;
 		Player* player;
+		std::string* customInfo;
 	};
 
 public:
@@ -39,7 +41,7 @@ protected:
 	void RequestStackPush(StateID state_id);
 	void RequestStackPop();
 	void RequestStackClear();
-
+	void EditContextCustomInfo(std::string new_value);
 	Context GetContext() const;
 
 private:

@@ -4,7 +4,6 @@
 //modify the function detectCollisionAndApplyDamage to be called from the world class (no need to get damage and radius in parametter anymore)
 //the function only detect collision. It also make the player bounce back and get damage when hitting asteroids 
 //It also destroy the projectile when hitting an asteroid.
-// todo: refactor using entity instead of duplicating code for asteroid and player
 #include "SceneNode.hpp"
 #include "ReceiverCategories.hpp"
 #include "Command.hpp"
@@ -14,6 +13,7 @@
 #include <iostream>
 #include "ProjectileCustom.hpp"
 #include "Asteroid.hpp"
+#include "State.hpp"
 SceneNode::SceneNode():m_children(), m_children_to_remove(), m_parent(nullptr)
 {
 }
@@ -222,13 +222,6 @@ void SceneNode::DetectCollisionAndApplyDamage()
 				}
             }
 			
-            //detach aircraft if destroyed 
-            if (aircraft!=nullptr && aircraft->IsDestroyed())
-            {
-                DetachChild(*aircraft);
-                //childrenToRemove.push_back(child);
-                break;
-            }
 			//detach asteroid if destroyed 
 			else if (asteroid != nullptr && asteroid->IsDestroyed())
 			{

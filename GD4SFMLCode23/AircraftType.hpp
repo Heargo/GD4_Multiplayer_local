@@ -3,6 +3,7 @@
 #pragma once
 enum class AircraftType
 {
+	kNone,
 	kPlayer1,
 	kPlayer2,
 	kAircraftCount
