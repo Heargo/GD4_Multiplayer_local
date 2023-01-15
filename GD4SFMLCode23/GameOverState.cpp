@@ -1,3 +1,4 @@
+// Berk Tatar D00225745 : Worked on the initial GameOverState
 //HUGO REY D00262075 : Created this state is triggered when a player is dead.
 //It's similar to the menu state, but with a custom message depending on the player who died.
 

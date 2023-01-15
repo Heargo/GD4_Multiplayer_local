@@ -1,8 +1,12 @@
+Music and Sound references (due to bad functionality, you can see the code from the relevant branches) :
+
 Menu Theme https://www.youtube.com/watch?v=wc_0ii3SLp0
 
 Mission Theme https://www.youtube.com/watch?v=oNOoMF8Ibxk
 
 Spacecship Damage sound https://www.youtube.com/watch?v=cuna4nJROrs
+
+
 
 Pictures used in order to create the Main Menu:
 

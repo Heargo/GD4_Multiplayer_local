@@ -1,3 +1,4 @@
+// Berk Tatar D00225745
 #pragma once
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>

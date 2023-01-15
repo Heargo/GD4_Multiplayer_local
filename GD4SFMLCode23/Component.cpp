@@ -1,3 +1,4 @@
+// Berk Tatar D00225745
 #include "Component.hpp"
 namespace GUI
 {
