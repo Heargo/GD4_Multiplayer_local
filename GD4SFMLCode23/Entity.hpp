@@ -13,6 +13,7 @@ public:
 	sf::Vector2f GetVelocity() const;
 	void Accelerate(sf::Vector2f velocity);
 	void Accelerate(float vx, float vy);
+	void AccelerateForward(float speed);
 	
 	void ApplyFriction();
 	void Rotate(sf::Vector2f velocity);

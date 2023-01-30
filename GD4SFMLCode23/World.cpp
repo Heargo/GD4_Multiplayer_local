@@ -40,11 +40,12 @@ World::World(sf::RenderWindow& window, FontHolder& font)
 
 void World::Update(sf::Time dt)
 {
-	//get camera to center between 2 players position
-	sf::Vector2f center = (m_player_1->getPosition() + m_player_2->getPosition()) / 2.f;
-	m_camera.setCenter(center);
-	
+	//get camera to center on the player
+	m_camera.setCenter(m_player_1->getPosition());
 
+	//get mouse position
+	sf::Vector2i mousePos = sf::Mouse::getPosition(m_window);
+	
 	//Forward the commands to the scenegraph, sort out velocity
 	while (!m_command_queue.IsEmpty())
 	{
@@ -54,6 +55,9 @@ void World::Update(sf::Time dt)
 	//apply friction to the player movement
 	AdaptPlayerPosition(m_player_1);
 	AdaptPlayerPosition(m_player_2);
+
+	m_player_1->RotateInMouseDirection(mousePos,m_window);
+	
 	m_player_1->ApplyFriction();
 	m_player_2->ApplyFriction();
 
