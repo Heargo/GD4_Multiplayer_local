@@ -48,6 +48,8 @@ Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontH
 	, m_textures(textures)
 	, m_air_layer(m_air_layer)
 {
+	sceneNodeName = "aircraft";
+	
 	sf::FloatRect bounds = m_sprite.getLocalBounds();
 	m_sprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
 	std::string empty_string = "";
@@ -57,15 +59,16 @@ Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontH
 
 	std::unique_ptr<TextNode> health_display(new TextNode(fonts, empty_string));
 	m_health_display = health_display.get();
+	health_display->sceneNodeName = "health dislayer";
 	AttachChild(std::move(health_display));
 
-	if (GetCategory() == static_cast<int>(ReceiverCategories::kPlayerAircraft))
+	/*if (GetCategory() == static_cast<int>(ReceiverCategories::kPlayerAircraft))
 	{
 		std::unique_ptr<TextNode> missile_display(new TextNode(fonts, empty_string));
 		missile_display->setPosition(0, 70);
 		m_missile_display = missile_display.get();
 		AttachChild(std::move(missile_display));
-	}
+	}*/
 	UpdateTexts();
 
 }
@@ -171,7 +174,7 @@ void Aircraft::Fire()
 		break;
 	}
 
-	std::unique_ptr<ProjectileCustom> bullet(new ProjectileCustom(bulletType, m_textures, m_air_layer));
+	std::unique_ptr<ProjectileCustom> bullet(new ProjectileCustom(bulletType, m_textures));
 	bullet->setPosition(BulletPosition());
 	bullet->setRotation(rotation);
 	//set the velocity of the bullet depending on the rotation of the aircraft
@@ -179,6 +182,7 @@ void Aircraft::Fire()
 	bullet->SetVelocity(800.f * velocity);
 	//add bullet to air layout
 	m_air_layer->AttachChild(std::move(bullet));
+
 	
 }
 

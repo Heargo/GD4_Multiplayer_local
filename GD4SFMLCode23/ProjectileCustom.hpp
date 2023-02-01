@@ -27,7 +27,7 @@ public:
 	};
 
 public:
-	ProjectileCustom(ProjectileCustom::Type type, const TextureHolder& texture, SceneNode* air_layer);
+	ProjectileCustom(ProjectileCustom::Type type, const TextureHolder& texture);
 	//void guideTowards(sf::Vector2f position);
 	//bool isGuided() const;
 	virtual unsigned int GetCategory() const;
@@ -40,9 +40,10 @@ public:
 private:
 	virtual void UpdateCurrent(sf::Time dt, CommandQueue& commands);
 	virtual void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
+	virtual void OnCommand(const Command& command, sf::Time dt);
 private:
 	Type m_type;
 	sf::Sprite m_sprite;
-	SceneNode* m_air_layer;
+	//SceneNode* m_air_layer;
 	//sf::Vector2f m_targetDirection;
 };

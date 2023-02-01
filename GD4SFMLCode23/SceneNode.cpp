@@ -16,13 +16,23 @@
 #include "State.hpp"
 SceneNode::SceneNode():m_children(), m_children_to_remove(), m_parent(nullptr)
 {
+    sceneNodeName = "default";
 }
 
 void SceneNode::AttachChild(Ptr child)
 {
     child->m_parent = this;
     //TODO Why is emplace_back more efficient than push_back
+    std::cout << "AC - attaching ptr" << child->sceneNodeName << "("<< child <<")" << " as child of " << sceneNodeName << std::endl;
     m_children.emplace_back(std::move(child));
+
+	//log all childs
+    std::cout << "AC - all childs of "<< sceneNodeName << "(" << this << ")" << " are" << std::endl;
+	for (auto& child : m_children)
+	{
+		std::cout << "AC - Child: " << child->sceneNodeName << " (" << child << ")" << std::endl;
+	}
+	
 }
 
 SceneNode::Ptr SceneNode::DetachChild(const SceneNode& node)
@@ -102,15 +112,22 @@ unsigned int SceneNode::GetCategory() const
 void SceneNode::OnCommand(const Command& command, sf::Time dt)
 {
     //Is this command for me. If it is execute. Regardless of the answer forward it on to all of my children
-    if (command.category & GetCategory())
+    if (command.category & GetCategory())//
     {
         command.action(*this, dt);
     }
 
+	std::cout << "OC - all childs of " << sceneNodeName << "(" << this << ")" << " are" << std::endl;
     //Pass it on to the children
     for (Ptr& child : m_children)
     {
-        child->OnCommand(command, dt);
+		//check if child is a valid pointer (not DDDDD or something like that ie: valid adress)
+        if (child)
+        {
+		    std::cout << "OC - Child is : " << child->sceneNodeName << " (" << child << ")" << std::endl;
+
+            child->OnCommand(command, dt);
+        }
     }
 }
 
