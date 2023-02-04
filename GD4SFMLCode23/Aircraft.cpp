@@ -13,6 +13,7 @@
 #include <iostream>
 #include "ProjectileCustom.hpp"
 #include "Layers.hpp"
+#include <SFML/Window/Mouse.hpp>
 
 namespace
 {
@@ -47,6 +48,8 @@ Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontH
 	, m_textures(textures)
 	, m_air_layer(m_air_layer)
 {
+	sceneNodeName = "aircraft";
+	
 	sf::FloatRect bounds = m_sprite.getLocalBounds();
 	m_sprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
 	std::string empty_string = "";
@@ -54,17 +57,18 @@ Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontH
 	//fix max size of sprite to 100x100
 	m_sprite.setScale(100.f / bounds.width, 100.f / bounds.height);
 
-	std::unique_ptr<TextNode> health_display(new TextNode(fonts, empty_string));
+	/*std::unique_ptr<TextNode> health_display(new TextNode(fonts, empty_string));
 	m_health_display = health_display.get();
-	AttachChild(std::move(health_display));
+	health_display->sceneNodeName = "health dislayer";
+	AttachChild(std::move(health_display));*/
 
-	if (GetCategory() == static_cast<int>(ReceiverCategories::kPlayerAircraft))
+	/*if (GetCategory() == static_cast<int>(ReceiverCategories::kPlayerAircraft))
 	{
 		std::unique_ptr<TextNode> missile_display(new TextNode(fonts, empty_string));
 		missile_display->setPosition(0, 70);
 		m_missile_display = missile_display.get();
 		AttachChild(std::move(missile_display));
-	}
+	}*/
 	UpdateTexts();
 
 }
@@ -109,9 +113,9 @@ void Aircraft::CollectMissiles(unsigned int count)
 
 void Aircraft::UpdateTexts()
 {
-	m_health_display->SetString(std::to_string(GetHitPoints()) + "HP");
+	/*m_health_display->SetString(std::to_string(GetHitPoints()) + "HP");
 	m_health_display->setPosition(0.f, 50.f);
-	m_health_display->setRotation(-getRotation());
+	m_health_display->setRotation(-getRotation());*/
 
 }
 
@@ -170,31 +174,15 @@ void Aircraft::Fire()
 		break;
 	}
 
-	std::unique_ptr<ProjectileCustom> bullet(new ProjectileCustom(bulletType, m_textures, m_air_layer));
+	std::unique_ptr<ProjectileCustom> bullet(new ProjectileCustom(bulletType, m_textures));
 	bullet->setPosition(BulletPosition());
 	bullet->setRotation(rotation);
 	//set the velocity of the bullet depending on the rotation of the aircraft
-	switch ((int)rotation)
-	{
-		case 0:
-			bullet->SetVelocity(0, -1000);
-			break;
-		case 90:
-			bullet->SetVelocity(1000, 0);
-			break;
-		case 180:
-			bullet->SetVelocity(0, 1000);
-			break;
-		case 270:
-			bullet->SetVelocity(-1000, 0);
-			break;
-		default:
-			bullet->SetVelocity(0, -1000);
-			break;
-	}
-	
+	sf::Vector2f velocity = sf::Vector2f(std::sin(rotation * 3.14159265 / 180), -std::cos(rotation * 3.14159265 / 180));
+	bullet->SetVelocity(800.f * velocity);
 	//add bullet to air layout
 	m_air_layer->AttachChild(std::move(bullet));
+	bullet = nullptr;
 	
 }
 
@@ -202,26 +190,18 @@ sf::Vector2f Aircraft::BulletPosition()
 {
 	//put the bullet 10px in front of the aircraft
 	float rotation = getRotation();
-	int offset = 50;
+	float offset = 50.f;
 	sf::Vector2f pos = getPosition();
-	switch ((int)rotation)
-	{
-	case 0:
-		pos.y -= offset;
-		break;
-	case 90:
-		pos.x += offset;
-		break;
-	case 180:
-		pos.y += offset;
-		break;
-	case 270:
-		pos.x -= offset;
-		break;
-	default:
-		pos.y -= offset;
-		break;
-	}
+	
+	//get the position of the bullet depending on the rotation of the aircraft
+	//get direction vector
+	sf::Vector2f direction = sf::Vector2f(std::sin(rotation * 3.14159265 / 180), -std::cos(rotation * 3.14159265 / 180));
+	//normalize direction vector
+	direction = direction / std::sqrt(direction.x * direction.x + direction.y * direction.y);
+	//multiply direction vector by offset
+	direction = direction * offset;
+	//add direction vector to position
+	pos = pos + direction;	
 
 	return pos;
 }
@@ -248,4 +228,26 @@ void Aircraft::UpdateCurrent(sf::Time dt, CommandQueue& commands)
 {
 	UpdateTexts();
 	Entity::UpdateCurrent(dt, commands);
+}
+
+void Aircraft::RotateInMouseDirection(sf::Vector2i mousePos, sf::RenderWindow& window)
+{
+	
+	//log to console the mouse pos
+	//std::cout << "mouse pos: " << mousePos.x << "," << mousePos.y << std::endl;
+
+	//get current position in the screen (between 1920x1080)
+	sf::Vector2i curPos = window.mapCoordsToPixel(getPosition());
+		
+	//std::cout << "curPos pos: " << curPos.x << "," << curPos.y << std::endl;
+	const float PI = 3.14159265;
+
+	float dx = curPos.x - mousePos.x;
+	float dy = curPos.y - mousePos.y;
+	float rotation = atan2f(dx, dy) * 180 / PI;
+
+
+	//log to console
+	//std::cout << "Rotation: " << rotation << std::endl;
+	setRotation(-rotation);
 }

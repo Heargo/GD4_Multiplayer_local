@@ -11,6 +11,7 @@
 
 #include <memory>
 #include <vector>
+#include <string>
 
 class Command;
 
@@ -19,6 +20,7 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
 {
 public:
 	typedef std::unique_ptr<SceneNode> Ptr;
+	std::string sceneNodeName;
 
 public:
 	SceneNode();

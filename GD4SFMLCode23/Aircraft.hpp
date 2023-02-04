@@ -7,11 +7,14 @@
 #include "ResourceIdentifiers.hpp"
 #include <SFML/Graphics/Sprite.hpp>
 #include "TextNode.hpp"
+#include "State.hpp"
+#include <SFML/Graphics/RenderWindow.hpp>
+
 
 class Aircraft : public Entity
 {
 public:
-	Aircraft(AircraftType type, const TextureHolder& textures, const FontHolder& fonts, SceneNode* m_air_layer );
+	Aircraft(AircraftType type, const TextureHolder& textures, const FontHolder& fonts, SceneNode* m_air_layer);
 	unsigned int GetCategory() const override;
 
 	void IncreaseFireRate();
@@ -22,6 +25,7 @@ public:
 	float GetMaxSpeed() const;
 	void Fire();
 	void ApplyDamage(float damage);
+	void RotateInMouseDirection(sf::Vector2i mousePos, sf::RenderWindow& window);
 
 	AircraftType GetType();
 

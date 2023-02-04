@@ -41,6 +41,18 @@ void Entity::Accelerate(float vx, float vy)
 	m_velocity.y += vy;
 }
 
+void Entity::AccelerateForward(float speed)
+{
+	//accelerate the entity in the direction of its rotation
+	float rotation = getRotation();
+	//get direction vector
+	sf::Vector2f direction = sf::Vector2f(std::sin(rotation * 3.14159265 / 180), -std::cos(rotation * 3.14159265 / 180));
+	//multiply by speed
+	direction *= speed;
+	//add to velocity
+	m_velocity += direction;
+}
+
 /**
  * Apply a "friction" to the entity's velocity. This allow the entity to slow down over time if the player do not press any key.
  * This is to apply a "drag" effect in space to the entity and make the controls more challenging.

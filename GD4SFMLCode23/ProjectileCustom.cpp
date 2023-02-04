@@ -15,14 +15,14 @@
 #include <iostream>
 
 
-ProjectileCustom::ProjectileCustom(ProjectileCustom::Type type, const TextureHolder& texture, SceneNode* air_layer)
+ProjectileCustom::ProjectileCustom(ProjectileCustom::Type type, const TextureHolder& texture)
 	:Entity(1)
 	,m_type(type)
 	,m_sprite(texture.Get(Texture::kBullet))
-	, m_air_layer(air_layer)
 {
 	//log to console 
 	std::cout << "Projectile created." << std::endl;
+	sceneNodeName = "projectile";
 }
 
 
@@ -54,5 +54,10 @@ void ProjectileCustom::UpdateCurrent(sf::Time dt, CommandQueue& commands)
 void ProjectileCustom::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(m_sprite, states);
+}
+
+void ProjectileCustom::OnCommand(const Command& command, sf::Time dt)
+{
+	//do nothing
 }
 

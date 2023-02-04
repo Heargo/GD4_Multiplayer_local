@@ -40,22 +40,27 @@ World::World(sf::RenderWindow& window, FontHolder& font)
 
 void World::Update(sf::Time dt)
 {
-	//get camera to center between 2 players position
-	sf::Vector2f center = (m_player_1->getPosition() + m_player_2->getPosition()) / 2.f;
-	m_camera.setCenter(center);
-	
+	//get camera to center on the player
+	m_camera.setCenter(m_player_1->getPosition());
 
+	//get mouse position
+	sf::Vector2i mousePos = sf::Mouse::getPosition(m_window);
+	
 	//Forward the commands to the scenegraph, sort out velocity
 	while (!m_command_queue.IsEmpty())
 	{
+		std::cout << "Command queue is not empty" << std::endl;
 		m_scenegraph.OnCommand(m_command_queue.Pop(), dt);
 	}
 	
 	//apply friction to the player movement
 	AdaptPlayerPosition(m_player_1);
-	AdaptPlayerPosition(m_player_2);
+	//AdaptPlayerPosition(m_player_2);
+
+	m_player_1->RotateInMouseDirection(mousePos,m_window);
+	
 	m_player_1->ApplyFriction();
-	m_player_2->ApplyFriction();
+	//m_player_2->ApplyFriction();
 
 	//calculate damage & collision in air layer
 	m_air_layer->DetectCollisionAndApplyDamage();
@@ -79,8 +84,8 @@ AircraftType World::IsGameOver()
 {
 	if (m_player_1->IsDestroyed())
 		return AircraftType::kPlayer1;
-	else if (m_player_2->IsDestroyed())
-		return AircraftType::kPlayer2;
+	//else if (m_player_2->IsDestroyed())
+	//	return AircraftType::kPlayer2;
 	else
 		return AircraftType::kNone;
 }
@@ -109,6 +114,7 @@ void World::BuildScene()
 	{ 
 		SceneNode::Ptr layer(new SceneNode());
 		m_scene_layers[i] = layer.get();
+		layer->sceneNodeName = "Layer " + std::to_string(i);
 		m_scenegraph.AttachChild(std::move(layer));
 	}
 
@@ -124,24 +130,26 @@ void World::BuildScene()
 	//Add the background sprite to the world
 	std::unique_ptr<SpriteNode> background_sprite(new SpriteNode(texture, textureRect));
 	background_sprite->setPosition(m_world_bounds.left - sizeIncrease/2, m_world_bounds.top - sizeIncrease / 2);
+	background_sprite->sceneNodeName = "Background";
 	m_scene_layers[static_cast<int>(Layers::kBackground)]->AttachChild(std::move(background_sprite));
 
 	//air layer
 	m_air_layer = m_scene_layers[static_cast<int>(Layers::kAir)];
+	m_air_layer->sceneNodeName = "airlayer";
 
 	//Add player's 1 aircraft
 	std::unique_ptr<Aircraft> player1(new Aircraft(AircraftType::kPlayer1, m_textures, m_fonts, m_air_layer));
 	m_player_1 = player1.get();
 	m_player_1->setPosition(m_spawn_position);
 	
-	//Add player's 2 aircraft
-	sf::Vector2f spawnPosition2 = m_spawn_position + sf::Vector2f(100.f, 0.f);
-	std::unique_ptr<Aircraft> player2(new Aircraft(AircraftType::kPlayer2, m_textures, m_fonts, m_air_layer));
-	m_player_2 = player2.get();
-	m_player_2->setPosition(spawnPosition2);
+	////Add player's 2 aircraft
+	//sf::Vector2f spawnPosition2 = m_spawn_position + sf::Vector2f(100.f, 0.f);
+	//std::unique_ptr<Aircraft> player2(new Aircraft(AircraftType::kPlayer2, m_textures, m_fonts, m_air_layer));
+	//m_player_2 = player2.get();
+	//m_player_2->setPosition(spawnPosition2);
 
 	m_scene_layers[static_cast<int>(Layers::kAir)]->AttachChild(std::move(player1));
-	m_scene_layers[static_cast<int>(Layers::kAir)]->AttachChild(std::move(player2));
+	//m_scene_layers[static_cast<int>(Layers::kAir)]->AttachChild(std::move(player2));
 
 	//add 30 asteroids
 	SpawnAsteroides(60);
@@ -212,6 +220,7 @@ void World::SpawnAsteroides(int nbAsteroides)
 		//create it and add it to the scene
 		std::unique_ptr<Asteroid> asteroid(new Asteroid(size, m_textures));
 		asteroid->setPosition(pos);
+		asteroid->sceneNodeName = "Asteroid " + std::to_string(i);
 		m_scene_layers[static_cast<int>(Layers::kAir)]->AttachChild(std::move(asteroid));
 	}
 }

@@ -22,6 +22,8 @@ private:
 
 private:
 	std::map<sf::Keyboard::Key, Action> m_key_binding;
+	//mouse bindings
+	std::map<sf::Mouse::Button, Action> m_mouse_binding;
 	std::map<Action, Command> m_action_binding;
 
 };
