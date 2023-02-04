@@ -57,10 +57,10 @@ Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontH
 	//fix max size of sprite to 100x100
 	m_sprite.setScale(100.f / bounds.width, 100.f / bounds.height);
 
-	std::unique_ptr<TextNode> health_display(new TextNode(fonts, empty_string));
+	/*std::unique_ptr<TextNode> health_display(new TextNode(fonts, empty_string));
 	m_health_display = health_display.get();
 	health_display->sceneNodeName = "health dislayer";
-	AttachChild(std::move(health_display));
+	AttachChild(std::move(health_display));*/
 
 	/*if (GetCategory() == static_cast<int>(ReceiverCategories::kPlayerAircraft))
 	{
@@ -113,9 +113,9 @@ void Aircraft::CollectMissiles(unsigned int count)
 
 void Aircraft::UpdateTexts()
 {
-	m_health_display->SetString(std::to_string(GetHitPoints()) + "HP");
+	/*m_health_display->SetString(std::to_string(GetHitPoints()) + "HP");
 	m_health_display->setPosition(0.f, 50.f);
-	m_health_display->setRotation(-getRotation());
+	m_health_display->setRotation(-getRotation());*/
 
 }
 
@@ -182,7 +182,7 @@ void Aircraft::Fire()
 	bullet->SetVelocity(800.f * velocity);
 	//add bullet to air layout
 	m_air_layer->AttachChild(std::move(bullet));
-
+	bullet = nullptr;
 	
 }
 

@@ -23,15 +23,15 @@ void SceneNode::AttachChild(Ptr child)
 {
     child->m_parent = this;
     //TODO Why is emplace_back more efficient than push_back
-    std::cout << "AC - attaching ptr" << child->sceneNodeName << "("<< child <<")" << " as child of " << sceneNodeName << std::endl;
+    //std::cout << "AC - attaching ptr" << child->sceneNodeName << "("<< child <<")" << " as child of " << sceneNodeName << std::endl;
     m_children.emplace_back(std::move(child));
 
 	//log all childs
-    std::cout << "AC - all childs of "<< sceneNodeName << "(" << this << ")" << " are" << std::endl;
+    /*std::cout << "AC - all childs of "<< sceneNodeName << "(" << this << ")" << " are" << std::endl;
 	for (auto& child : m_children)
 	{
 		std::cout << "AC - Child: " << child->sceneNodeName << " (" << child << ")" << std::endl;
-	}
+	}*/
 	
 }
 
@@ -117,7 +117,13 @@ void SceneNode::OnCommand(const Command& command, sf::Time dt)
         command.action(*this, dt);
     }
 
-	std::cout << "OC - all childs of " << sceneNodeName << "(" << this << ")" << " are" << std::endl;
+	
+    //if child is an aircraft, don't pass the command to childrens
+    if (sceneNodeName == "aircraft") return;
+    else
+    {
+	    std::cout << "OC ------- " << sceneNodeName << "(" << this << ")" << " ------- " << std::endl;
+    }
     //Pass it on to the children
     for (Ptr& child : m_children)
     {
@@ -125,7 +131,6 @@ void SceneNode::OnCommand(const Command& command, sf::Time dt)
         if (child)
         {
 		    std::cout << "OC - Child is : " << child->sceneNodeName << " (" << child << ")" << std::endl;
-
             child->OnCommand(command, dt);
         }
     }

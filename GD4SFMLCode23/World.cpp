@@ -152,7 +152,7 @@ void World::BuildScene()
 	//m_scene_layers[static_cast<int>(Layers::kAir)]->AttachChild(std::move(player2));
 
 	//add 30 asteroids
-	//SpawnAsteroides(60);
+	SpawnAsteroides(60);
 
 }
 
